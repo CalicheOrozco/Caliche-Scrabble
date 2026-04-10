@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { DictionaryProvider } from './context/DictionaryContext';
 import { useGame } from './hooks/useGame';
 import type { DrawSize } from './constants/game';
@@ -12,8 +12,27 @@ import { StatsPanel } from './components/stats/StatsPanel';
 import { FoundWordsList } from './components/stats/FoundWordsList';
 import { ReviewModal } from './components/stats/ReviewModal';
 import { WordChecker } from './pages/WordChecker';
+import { ScoreTracker } from './pages/ScoreTracker';
 
-type Page = 'game' | 'checker';
+type Page = 'game' | 'checker' | 'scores';
+
+function pageFromPathname(pathname: string): Page {
+  const normalized = pathname.replace(/\/+$/, '');
+  if (/^\/ScoreTracker$/i.test(normalized)) return 'scores';
+  if (/^\/(WordChecker|checker)$/i.test(normalized)) return 'checker';
+  return 'game';
+}
+
+function pathnameForPage(page: Page): string {
+  switch (page) {
+    case 'game':
+      return '/';
+    case 'checker':
+      return '/WordChecker';
+    case 'scores':
+      return '/ScoreTracker';
+  }
+}
 
 function GamePage() {
   const [wildcardPickerTileId, setWildcardPickerTileId] = useState<string | null>(null);
@@ -124,13 +143,29 @@ function GamePage() {
 }
 
 export default function App() {
-  const [page, setPage] = useState<Page>('game');
+  const [page, setPage] = useState<Page>(() => pageFromPathname(window.location.pathname));
+
+  useEffect(() => {
+    const syncFromUrl = () => setPage(pageFromPathname(window.location.pathname));
+    window.addEventListener('popstate', syncFromUrl);
+    return () => window.removeEventListener('popstate', syncFromUrl);
+  }, []);
+
+  const navigate = (nextPage: Page) => {
+    setPage(nextPage);
+    const nextPathname = pathnameForPage(nextPage);
+    if (window.location.pathname !== nextPathname) {
+      window.history.pushState({}, '', nextPathname);
+    }
+  };
 
   return (
     <DictionaryProvider>
       <div className="min-h-dvh bg-slate-900 text-slate-100 flex flex-col">
-        <Header page={page} onNavigate={setPage} />
-        {page === 'game' ? <GamePage /> : <WordChecker />}
+        {page !== 'scores' && <Header page={page} onNavigate={navigate} />}
+        {page === 'game' && <GamePage />}
+        {page === 'checker' && <WordChecker />}
+        {page === 'scores' && <ScoreTracker />}
       </div>
     </DictionaryProvider>
   );
