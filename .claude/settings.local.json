@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Bash(npm install:*)",
+      "Bash(node scripts/preprocess-dicts.mjs)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run:*)",
+      "Bash(curl -s http://localhost:5173/)",
+      "Bash(pkill -f \"vite --port 5173\")",
+      "Bash(mv web/README.md web/eslint.config.js web/index.html web/package-lock.json web/package.json web/tailwind.css web/tsconfig.app.json web/tsconfig.json web/tsconfig.node.json web/vite.config.ts .)",
+      "Bash(mv web/node_modules web/public web/scripts web/src .)",
+      "Bash(rmdir web:*)",
+      "Bash(npx eslint:*)"
+    ]
+  }
+}

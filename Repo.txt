@@ -1,0 +1,4 @@
+https://github.com/olea/lemarios
+https://github.com/fogleman/TWL06
+https://github.com/cviebrock/wordlists
+https://github.com/kamilmielnik/scrabble-dictionaries/tree/master

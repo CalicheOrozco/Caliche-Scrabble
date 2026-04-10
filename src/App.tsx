@@ -1,0 +1,137 @@
+import { useState, useMemo } from 'react';
+import { DictionaryProvider } from './context/DictionaryContext';
+import { useGame } from './hooks/useGame';
+import type { DrawSize } from './constants/game';
+
+import { Header } from './components/layout/Header';
+import { GameControls } from './components/game/GameControls';
+import { TileRack } from './components/game/TileRack';
+import { WordBuilder } from './components/game/WordBuilder';
+import { WildcardPicker } from './components/game/WildcardPicker';
+import { StatsPanel } from './components/stats/StatsPanel';
+import { FoundWordsList } from './components/stats/FoundWordsList';
+import { ReviewModal } from './components/stats/ReviewModal';
+import { WordChecker } from './pages/WordChecker';
+
+type Page = 'game' | 'checker';
+
+function GamePage() {
+  const [wildcardPickerTileId, setWildcardPickerTileId] = useState<string | null>(null);
+
+  const {
+    state, workerStatus, wordStatus, foundWordSet,
+    draw, selectTile, submitWord, assignWildcard,
+    clearSelection, revealWord, shuffleTiles,
+    reset, setDrawSize, toggleLang, setReviewing, exitReviewing,
+  } = useGame();
+
+  const usedTileIds = useMemo(() => new Set<string>(), []);
+
+  const selectedTilesData = state.selectedTileIds
+    .map((id) => state.drawnTiles.find((t) => t.id === id))
+    .filter((t): t is NonNullable<typeof t> => t !== undefined);
+
+  const handleNewDraw = () => { reset(); draw(); };
+
+  return (
+    <>
+      <main className="flex-1 flex flex-col items-center gap-6 px-4 py-6 max-w-2xl mx-auto w-full">
+        <GameControls
+          drawSize={state.drawSize as DrawSize}
+          activeLangs={state.activeLangs}
+          workerStatus={workerStatus}
+          phase={state.phase}
+          onDrawSizeChange={setDrawSize}
+          onToggleLang={toggleLang}
+          onDraw={draw}
+          onReset={handleNewDraw}
+        />
+
+        {state.drawnTiles.length > 0 && (
+          <div className="w-full flex flex-col items-center gap-6">
+            <WordBuilder
+              selectedTiles={selectedTilesData}
+              wildcardAssignments={state.wildcardAssignments}
+              wordStatus={wordStatus}
+              onClear={clearSelection}
+              onSubmit={submitWord}
+              onWildcardClick={(id) => setWildcardPickerTileId(id)}
+            />
+            <TileRack
+              tiles={state.drawnTiles}
+              selectedTileIds={state.selectedTileIds}
+              usedTileIds={usedTileIds}
+              wildcardAssignments={state.wildcardAssignments}
+              onTileClick={selectTile}
+            />
+            <button
+              onPointerDown={(e) => { e.preventDefault(); shuffleTiles(); }}
+              className="text-slate-500 hover:text-slate-300 text-sm flex items-center gap-1.5 transition-colors select-none"
+            >
+              <span>⇌</span> Shuffle
+            </button>
+          </div>
+        )}
+
+        {state.phase === 'idle' && (
+          <div className="flex-1 flex flex-col items-center justify-center text-center gap-3 py-12">
+            <div className="text-6xl mb-2">🎯</div>
+            <h2 className="text-2xl font-bold text-slate-200">Train your Scrabble anagram skills!</h2>
+            <p className="text-slate-400 max-w-sm text-sm leading-relaxed">
+              Choose how many tiles to draw, pick your languages, and start finding words.
+              Click the letters to spell them out.
+            </p>
+          </div>
+        )}
+
+        {(state.phase === 'playing' || state.phase === 'computing' || state.phase === 'reviewing') && (
+          <div className="w-full space-y-4">
+            <StatsPanel
+              stats={state.stats}
+              foundWords={state.foundWords}
+              revealedWords={state.revealedWords}
+              failedAttempts={state.failedAttempts}
+              phase={state.phase}
+              onReview={setReviewing}
+              onReveal={revealWord}
+            />
+            <FoundWordsList
+              foundWords={state.foundWords}
+              revealedWords={state.revealedWords}
+            />
+          </div>
+        )}
+      </main>
+
+      {wildcardPickerTileId && (
+        <WildcardPicker
+          tileId={wildcardPickerTileId}
+          onSelect={(id, letter) => { assignWildcard(id, letter); setWildcardPickerTileId(null); }}
+          onClose={() => setWildcardPickerTileId(null)}
+        />
+      )}
+
+      {state.phase === 'reviewing' && (
+        <ReviewModal
+          allWords={state.allValidWords}
+          foundWordSet={foundWordSet}
+          onClose={exitReviewing}
+          onNewDraw={handleNewDraw}
+        />
+      )}
+    </>
+  );
+}
+
+export default function App() {
+  const [page, setPage] = useState<Page>('game');
+
+  return (
+    <DictionaryProvider>
+      <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col">
+        <Header page={page} onNavigate={setPage} />
+        {page === 'game' ? <GamePage /> : <WordChecker />}
+      </div>
+    </DictionaryProvider>
+  );
+}
