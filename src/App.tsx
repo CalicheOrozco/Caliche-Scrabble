@@ -128,7 +128,7 @@ export default function App() {
 
   return (
     <DictionaryProvider>
-      <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col">
+      <div className="min-h-dvh bg-slate-900 text-slate-100 flex flex-col">
         <Header page={page} onNavigate={setPage} />
         {page === 'game' ? <GamePage /> : <WordChecker />}
       </div>

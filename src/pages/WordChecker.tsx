@@ -50,25 +50,26 @@ export function WordChecker() {
       </div>
 
       {/* Input */}
-      <div className="w-full flex gap-2">
+      <div className="w-full flex flex-col sm:flex-row gap-2">
         <input
           ref={inputRef}
           type="text"
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => { setInput(e.target.value); setResult(null); }}
           onKeyDown={handleKey}
           placeholder="Type a word..."
           autoCapitalize="none"
           autoCorrect="off"
           spellCheck={false}
           disabled={status === 'loading'}
-          className="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 text-lg font-bold uppercase tracking-widest placeholder:normal-case placeholder:tracking-normal placeholder:font-normal placeholder:text-slate-600 focus:outline-none focus:border-indigo-500 disabled:opacity-40 transition-colors"
+          className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 text-lg font-bold uppercase tracking-widest placeholder:normal-case placeholder:tracking-normal placeholder:font-normal placeholder:text-slate-600 focus:outline-none focus:border-indigo-500 disabled:opacity-40 transition-colors"
         />
         <Button
           variant="primary"
           size="lg"
           disabled={!input.trim() || status !== 'ready' || checking}
           onPointerDown={(e) => { e.preventDefault(); check(); }}
+          className="w-full sm:w-auto"
         >
           {checking ? <Spinner /> : 'Check'}
         </Button>
