@@ -24,9 +24,6 @@ export function WordChecker() {
     });
   }, [subscribe]);
 
-  // Reset result when input changes
-  useEffect(() => { setResult(null); }, [input]);
-
   const check = () => {
     const word = input.trim();
     if (!word || status !== 'ready') return;

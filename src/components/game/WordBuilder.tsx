@@ -14,28 +14,46 @@ interface WordBuilderProps {
   onWildcardClick: (tileId: string) => void;
 }
 
+const AUTO_SUBMIT_DEBOUNCE_MS = 700;
+const AUTO_SUBMIT_FLASH_MS = 400;
+
 export function WordBuilder({ selectedTiles, wildcardAssignments, wordStatus, onClear, onSubmit, onWildcardClick }: WordBuilderProps) {
   const boxRef = useRef<HTMLDivElement>(null);
+
+  const spelledWord = selectedTiles
+    .map((tile) => {
+      if (!tile.isWildcard) return tile.letter;
+      return wildcardAssignments[tile.id] ?? '?';
+    })
+    .join('');
 
   // Trigger animation class on status change
   useEffect(() => {
     const el = boxRef.current;
     if (!el) return;
     if (wordStatus === 'valid') {
-      el.classList.add('word-flash');
-      const t = setTimeout(() => {
+      let flashTimeout: ReturnType<typeof setTimeout> | null = null;
+      const debounceTimeout = setTimeout(() => {
+        // If the user keeps building, this effect will be cleaned up and never fires.
+        el.classList.add('word-flash');
+        flashTimeout = setTimeout(() => {
+          el.classList.remove('word-flash');
+          onSubmit();
+        }, AUTO_SUBMIT_FLASH_MS);
+      }, AUTO_SUBMIT_DEBOUNCE_MS);
+
+      return () => {
+        clearTimeout(debounceTimeout);
+        if (flashTimeout) clearTimeout(flashTimeout);
         el.classList.remove('word-flash');
-        onSubmit();
-      }, 500);
-      return () => clearTimeout(t);
+      };
     }
     if (wordStatus === 'invalid' && selectedTiles.length >= 2) {
       el.classList.add('word-shake');
       const t = setTimeout(() => el.classList.remove('word-shake'), 400);
       return () => clearTimeout(t);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [wordStatus]);
+  }, [wordStatus, spelledWord, onSubmit, selectedTiles.length]);
 
   const isEmpty = selectedTiles.length === 0;
 
@@ -48,7 +66,7 @@ export function WordBuilder({ selectedTiles, wildcardAssignments, wordStatus, on
           'flex items-center justify-center gap-1 flex-wrap',
           isEmpty && 'border-slate-700 dark:border-slate-700 bg-slate-800/30',
           wordStatus === 'incomplete' && 'border-slate-600 bg-slate-800/30',
-          wordStatus === 'valid' && 'border-emerald-500 bg-emerald-500/10',
+          wordStatus === 'valid' && 'border-blue-500 bg-blue-500/10',
           wordStatus === 'found' && 'border-yellow-500 bg-yellow-500/10',
           wordStatus === 'invalid' && selectedTiles.length >= 2 && 'border-red-500/60 bg-red-500/5',
           wordStatus === 'invalid' && selectedTiles.length < 2 && 'border-slate-600 bg-slate-800/30',
@@ -70,7 +88,7 @@ export function WordBuilder({ selectedTiles, wildcardAssignments, wordStatus, on
                 className={clsx(
                   'text-2xl font-bold uppercase leading-none transition-colors',
                   tile.isWildcard && 'text-violet-400',
-                  !tile.isWildcard && wordStatus === 'valid' && 'text-emerald-400',
+                  !tile.isWildcard && wordStatus === 'valid' && 'text-blue-400',
                   !tile.isWildcard && wordStatus === 'found' && 'text-yellow-400',
                   !tile.isWildcard && wordStatus === 'invalid' && 'text-slate-200',
                   !tile.isWildcard && wordStatus === 'incomplete' && 'text-slate-200',

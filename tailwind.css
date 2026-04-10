@@ -50,6 +50,7 @@ body {
 
 .word-flash {
   animation: wordFlash 0.5s ease-out both;
+  border-color: oklch(68% 0.18 150 / 0.9);
 }
 
 .word-shake {
