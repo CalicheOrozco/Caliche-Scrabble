@@ -11,7 +11,11 @@
       "Bash(mv web/README.md web/eslint.config.js web/index.html web/package-lock.json web/package.json web/tailwind.css web/tsconfig.app.json web/tsconfig.json web/tsconfig.node.json web/vite.config.ts .)",
       "Bash(mv web/node_modules web/public web/scripts web/src .)",
       "Bash(rmdir web:*)",
-      "Bash(npx eslint:*)"
+      "Bash(npx eslint:*)",
+      "Bash(sips -g pixelWidth -g pixelHeight \"/Users/calicheorozco/Documents/Web Development/scrabble/public/Logo.png\")",
+      "Bash(sips -z 512 512 \"/Users/calicheorozco/Documents/Web Development/scrabble/public/Logo.png\" --out \"/Users/calicheorozco/Documents/Web Development/scrabble/public/favicon-512.png\")",
+      "Bash(convert \"/Users/calicheorozco/Documents/Web Development/scrabble/public/Logo.png\" -resize 512x512 -background white -gravity center -extent 512x512 \"/Users/calicheorozco/Documents/Web Development/scrabble/public/favicon-512.png\")",
+      "Bash(node -e ':*)"
     ]
   }
 }
