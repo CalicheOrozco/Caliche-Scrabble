@@ -2,6 +2,11 @@ import type { FoundWord } from '../../types';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 
+function googleUrl(word: string, lang: FoundWord['lang']) {
+  const query = lang === 'en' ? `${word} is a word?` : `${word} es una palabra?`;
+  return `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+}
+
 interface ReviewModalProps {
   allWords: FoundWord[];
   foundWordSet: Set<string>;
@@ -52,12 +57,15 @@ export function ReviewModal({ allWords, foundWordSet, onClose, onNewDraw }: Revi
                   {words.map((w) => {
                     const found = foundWordSet.has(w.word);
                     return (
-                      <div
+                      <a
                         key={w.word}
-                        className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 border ${
+                        href={googleUrl(w.word, w.lang)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 border transition-colors ${
                           found
-                            ? 'bg-emerald-500/15 border-emerald-500/30'
-                            : 'bg-slate-800 border-slate-700'
+                            ? 'bg-emerald-500/15 border-emerald-500/30 hover:bg-emerald-500/25'
+                            : 'bg-slate-800 border-slate-700 hover:bg-slate-700/80'
                         }`}
                       >
                         <span className={`font-bold text-sm uppercase ${found ? 'text-emerald-300' : 'text-slate-500'}`}>
@@ -65,7 +73,7 @@ export function ReviewModal({ allWords, foundWordSet, onClose, onNewDraw }: Revi
                         </span>
                         <Badge lang={w.lang} />
                         {found && <span className="text-emerald-400 text-xs">✓</span>}
-                      </div>
+                      </a>
                     );
                   })}
                 </div>

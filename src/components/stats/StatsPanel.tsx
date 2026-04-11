@@ -74,17 +74,28 @@ export function StatsPanel({ stats, foundWords, revealedWords, failedAttempts, p
         {lengths.map((len) => {
           const bucket = stats.byLength[len];
           const foundInLen = foundWords.filter((w) => w.length === len).length;
+          const foundEnInLen = foundWords.filter((w) => w.length === len && w.lang === 'en').length;
+          const foundEsInLen = foundWords.filter((w) => w.length === len && w.lang === 'es').length;
+          const foundBothInLen = foundWords.filter((w) => w.length === len && w.lang === 'both').length;
+          const remEn = bucket.en - foundEnInLen;
+          const remEs = bucket.es - foundEsInLen;
+          const remBoth = bucket.both - foundBothInLen;
           const allFound = foundInLen >= bucket.total;
           return (
             <div
               key={len}
-              className={`px-2.5 py-1 rounded-lg text-xs font-medium border ${
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-medium border ${
                 allFound
                   ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-400'
                   : 'bg-slate-800 border-slate-700 text-slate-400'
               }`}
             >
-              {len} letters: <span className="font-bold">{foundInLen}/{bucket.total}</span>
+              <div>{len} letters: <span className="font-bold">{foundInLen}/{bucket.total}</span></div>
+              <div className="flex gap-1.5 mt-0.5 font-normal opacity-70">
+                {bucket.en > 0 && <span className="text-blue-400">EN:{remEn}</span>}
+                {bucket.es > 0 && <span className="text-orange-400">ES:{remEs}</span>}
+                {bucket.both > 0 && <span className="text-emerald-400">⊕{remBoth}</span>}
+              </div>
             </div>
           );
         })}
