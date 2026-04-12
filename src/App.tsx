@@ -13,13 +13,15 @@ import { FoundWordsList } from './components/stats/FoundWordsList';
 import { ReviewModal } from './components/stats/ReviewModal';
 import { WordChecker } from './pages/WordChecker';
 import { ScoreTracker } from './pages/ScoreTracker';
+import { SpanishRecall } from './pages/SpanishRecall';
 
-type Page = 'game' | 'checker' | 'scores';
+type Page = 'game' | 'checker' | 'scores' | 'recall';
 
 function pageFromPathname(pathname: string): Page {
   const normalized = pathname.replace(/\/+$/, '');
   if (/^\/ScoreTracker$/i.test(normalized)) return 'scores';
   if (/^\/(WordChecker|checker)$/i.test(normalized)) return 'checker';
+  if (/^\/recall$/i.test(normalized)) return 'recall';
   return 'game';
 }
 
@@ -31,6 +33,8 @@ function pathnameForPage(page: Page): string {
       return '/WordChecker';
     case 'scores':
       return '/ScoreTracker';
+    case 'recall':
+      return '/recall';
   }
 }
 
@@ -166,6 +170,7 @@ export default function App() {
         {page === 'game' && <GamePage />}
         {page === 'checker' && <WordChecker />}
         {page === 'scores' && <ScoreTracker />}
+        {page === 'recall' && <SpanishRecall />}
       </div>
     </DictionaryProvider>
   );

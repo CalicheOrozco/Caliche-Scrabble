@@ -1,6 +1,6 @@
 import { clsx } from 'clsx';
 
-type Page = 'game' | 'checker' | 'scores';
+type Page = 'game' | 'checker' | 'scores' | 'recall';
 
 interface HeaderProps {
   page: Page;
@@ -11,6 +11,7 @@ const PAGE_LABELS: Record<Page, string> = {
   game: 'Game',
   checker: 'Word Checker',
   scores: 'Scores',
+  recall: 'Recall',
 };
 
 export function Header({ page, onNavigate }: HeaderProps) {
@@ -24,7 +25,7 @@ export function Header({ page, onNavigate }: HeaderProps) {
       </div>
 
       <nav className="flex gap-1 bg-slate-800 rounded-xl p-1 overflow-x-auto">
-        {(['game', 'checker'] as Page[]).map((p) => (
+        {(['game', 'checker', 'recall'] as Page[]).map((p) => (
           <button
             key={p}
             onPointerDown={(e) => { e.preventDefault(); onNavigate(p); }}
