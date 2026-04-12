@@ -1,0 +1,44 @@
+INSTRUCCIONES PARA GENERAR words_translated.json
+=================================================
+
+Requisitos previos:
+  - Tener el archivo Spanish.txt en la carpeta del proyecto
+
+Abrir la terminal y navegar a la carpeta del proyecto:
+  cd "/Users/calicheorozco/Documents/Web Development/scrabble"
+
+
+PASO 1 — Filtrar palabras de 7 letras
+--------------------------------------
+  python filter_7_letters.py
+
+  Genera: Spanish_7letters.txt (~49,000 palabras)
+
+
+PASO 2 — Ordenar por frecuencia de uso
+----------------------------------------
+  pip install wordfreq
+  python sort_by_frequency.py
+
+  Genera: Spanish_7letters_sorted.txt (mismas palabras, las más comunes primero)
+
+
+PASO 3 — Traducir las primeras 10,000 al inglés
+-------------------------------------------------
+  pip install deep-translator
+  python translate_words.py
+
+  Genera: words_translated.json
+
+  Nota: tarda entre 5 y 10 minutos.
+  Si se interrumpe, vuelve a correr el mismo comando y retoma donde quedó.
+
+
+RESULTADO FINAL
+---------------
+  words_translated.json contiene 10,000 palabras con este formato:
+  [
+    { "word": "también", "translate": "also" },
+    { "word": "persona", "translate": "person" },
+    ...
+  ]
