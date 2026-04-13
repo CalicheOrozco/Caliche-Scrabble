@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-type TargetPage = 'wordsearch' | 'memory' | 'memoryinverse' | 'math' | 'fastcategory' | 'numbers';
+type TargetPage = 'wordsearch' | 'memory' | 'memoryinverse' | 'math' | 'fastcategory' | 'numbers' | 'stroop';
 
 interface PracticeMenuProps {
   onNavigate: (page: TargetPage) => void;
@@ -101,6 +101,18 @@ function FastCategoryIcon() {
   );
 }
 
+function StroopEffectIcon() {
+  return (
+    <IconTile>
+      <svg viewBox="0 0 24 24" className="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+        <circle cx="12" cy="12" r="3" />
+        <path d="M9 9l6 6M15 9l-6 6" />
+      </svg>
+    </IconTile>
+  );
+}
+
 function Card({ title, icon, onClick }: { title: string; icon: ReactNode; onClick: () => void }) {
   return (
     <button
@@ -133,6 +145,7 @@ export function PracticeMenu({ onNavigate }: PracticeMenuProps) {
         <Card title="Memory Inverse" icon={<MemoryInverseIcon />} onClick={() => onNavigate('memoryinverse')} />
         <Card title="Math Problems" icon={<MathProblemsIcon />} onClick={() => onNavigate('math')} />
         <Card title="Fast Category" icon={<FastCategoryIcon />} onClick={() => onNavigate('fastcategory')} />
+        <Card title="Stroop Effect" icon={<StroopEffectIcon />} onClick={() => onNavigate('stroop')} />
       </div>
     </main>
   );
