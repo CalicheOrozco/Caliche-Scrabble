@@ -94,7 +94,6 @@ export function MemorySequence() {
   const startGame = () => {
     clearTimeouts();
     const cfg = DIFF_CONFIG[difficulty];
-    const firstNum = randomNum(cfg.total);
     const seq = Array.from({ length: cfg.startLen }, () => randomNum(cfg.total));
     setSequence(seq);
     setRound(seq.length);

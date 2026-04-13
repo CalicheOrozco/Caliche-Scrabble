@@ -20,13 +20,15 @@ import { MemorySequence } from './pages/MemorySequence';
 import { MemoryInverse } from './pages/MemoryInverse';
 import { MathProblems } from './pages/MathProblems';
 import { FastCategory } from './pages/FastCategory';
+import { PracticeMenu } from './pages/PracticeMenu';
 
-type Page = 'game' | 'checker' | 'scores' | 'recall' | 'numbers' | 'wordsearch' | 'memory' | 'memoryinverse' | 'math' | 'fastcategory';
+type Page = 'game' | 'minigames' | 'checker' | 'scores' | 'recall' | 'numbers' | 'wordsearch' | 'memory' | 'memoryinverse' | 'math' | 'fastcategory';
 
 function pageFromPathname(pathname: string): Page {
   const normalized = pathname.replace(/\/+$/, '');
   if (/^\/ScoreTracker$/i.test(normalized)) return 'scores';
   if (/^\/(WordChecker|checker)$/i.test(normalized)) return 'checker';
+  if (/^\/(mini-games|practice|menu)$/i.test(normalized)) return 'minigames';
   if (/^\/recall$/i.test(normalized)) return 'recall';
   if (/^\/number-sequence$/i.test(normalized)) return 'numbers';
   if (/^\/word-search$/i.test(normalized)) return 'wordsearch';
@@ -40,6 +42,7 @@ function pageFromPathname(pathname: string): Page {
 function pathnameForPage(page: Page): string {
   switch (page) {
     case 'game':          return '/';
+    case 'minigames':     return '/mini-games';
     case 'checker':       return '/WordChecker';
     case 'scores':        return '/ScoreTracker';
     case 'recall':        return '/recall';
@@ -164,7 +167,21 @@ export default function App() {
   const [page, setPage] = useState<Page>(() => pageFromPathname(window.location.pathname));
 
   useEffect(() => {
-    const syncFromUrl = () => setPage(pageFromPathname(window.location.pathname));
+    const syncFromUrl = () => {
+      const nextPage = pageFromPathname(window.location.pathname);
+      setPage(nextPage);
+
+      // If the user landed on an alias route (e.g. /practice), normalize to the
+      // canonical pathname so the URL doesn't keep the old alias.
+      const canonical = pathnameForPage(nextPage);
+      if (window.location.pathname !== canonical) {
+        window.history.replaceState({}, '', canonical);
+      }
+    };
+
+    // Run once on mount to normalize the initial URL.
+    syncFromUrl();
+
     window.addEventListener('popstate', syncFromUrl);
     return () => window.removeEventListener('popstate', syncFromUrl);
   }, []);
@@ -182,6 +199,7 @@ export default function App() {
       <div className="min-h-dvh bg-slate-900 text-slate-100 flex flex-col">
         {page !== 'scores' && <Header page={page} onNavigate={navigate} />}
         {page === 'game' && <GamePage />}
+        {page === 'minigames' && <PracticeMenu onNavigate={navigate} />}
         {page === 'checker' && <WordChecker />}
         {page === 'scores' && <ScoreTracker />}
         {page === 'recall' && <SpanishRecall />}
