@@ -18,8 +18,9 @@ import { NumberSequence } from './pages/NumberSequence';
 import { WordSearch } from './pages/WordSearch';
 import { MemorySequence } from './pages/MemorySequence';
 import { MemoryInverse } from './pages/MemoryInverse';
+import { MathProblems } from './pages/MathProblems';
 
-type Page = 'game' | 'checker' | 'scores' | 'recall' | 'numbers' | 'wordsearch' | 'memory' | 'memoryinverse';
+type Page = 'game' | 'checker' | 'scores' | 'recall' | 'numbers' | 'wordsearch' | 'memory' | 'memoryinverse' | 'math';
 
 function pageFromPathname(pathname: string): Page {
   const normalized = pathname.replace(/\/+$/, '');
@@ -30,6 +31,7 @@ function pageFromPathname(pathname: string): Page {
   if (/^\/word-search$/i.test(normalized)) return 'wordsearch';
   if (/^\/memory-sequence$/i.test(normalized)) return 'memory';
   if (/^\/memory-inverse$/i.test(normalized)) return 'memoryinverse';
+  if (/^\/math-problems$/i.test(normalized)) return 'math';
   return 'game';
 }
 
@@ -43,6 +45,7 @@ function pathnameForPage(page: Page): string {
     case 'wordsearch':    return '/word-search';
     case 'memory':        return '/memory-sequence';
     case 'memoryinverse': return '/memory-inverse';
+    case 'math':          return '/math-problems';
   }
 }
 
@@ -183,6 +186,7 @@ export default function App() {
         {page === 'wordsearch' && <WordSearch />}
         {page === 'memory' && <MemorySequence />}
         {page === 'memoryinverse' && <MemoryInverse />}
+        {page === 'math' && <MathProblems />}
       </div>
     </DictionaryProvider>
   );
