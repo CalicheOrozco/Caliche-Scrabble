@@ -20,7 +20,7 @@ import { MemorySequence } from './pages/MemorySequence';
 import { MemoryInverse } from './pages/MemoryInverse';
 import { MathProblems } from './pages/MathProblems';
 import { FastCategory } from './pages/FastCategory';
-import { PracticeMenu } from './pages/PracticeMenu';
+import { PracticeMenu } from './pages/MinigamesMenu';
 
 type Page = 'game' | 'minigames' | 'checker' | 'scores' | 'recall' | 'numbers' | 'wordsearch' | 'memory' | 'memoryinverse' | 'math' | 'fastcategory';
 
@@ -194,10 +194,26 @@ export default function App() {
     }
   };
 
+  const MINIGAME_PAGES: Page[] = ['numbers', 'wordsearch', 'memory', 'memoryinverse', 'math', 'fastcategory'];
+  const isMinigame = MINIGAME_PAGES.includes(page);
+
   return (
     <DictionaryProvider>
       <div className="min-h-dvh bg-slate-900 text-slate-100 flex flex-col">
         {page !== 'scores' && <Header page={page} onNavigate={navigate} />}
+        {isMinigame && (
+          <div className="px-4 pt-3 pb-0 max-w-3xl mx-auto w-full">
+            <button
+              onClick={() => navigate('minigames')}
+              className="flex items-center gap-1.5 text-slate-400 hover:text-slate-200 text-sm transition-colors"
+            >
+              <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+              Mini games
+            </button>
+          </div>
+        )}
         {page === 'game' && <GamePage />}
         {page === 'minigames' && <PracticeMenu onNavigate={navigate} />}
         {page === 'checker' && <WordChecker />}
