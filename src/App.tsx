@@ -15,8 +15,9 @@ import { WordChecker } from './pages/WordChecker';
 import { ScoreTracker } from './pages/ScoreTracker';
 import { SpanishRecall } from './pages/SpanishRecall';
 import { NumberSequence } from './pages/NumberSequence';
+import { WordSearch } from './pages/WordSearch';
 
-type Page = 'game' | 'checker' | 'scores' | 'recall' | 'numbers';
+type Page = 'game' | 'checker' | 'scores' | 'recall' | 'numbers' | 'wordsearch';
 
 function pageFromPathname(pathname: string): Page {
   const normalized = pathname.replace(/\/+$/, '');
@@ -24,16 +25,18 @@ function pageFromPathname(pathname: string): Page {
   if (/^\/(WordChecker|checker)$/i.test(normalized)) return 'checker';
   if (/^\/recall$/i.test(normalized)) return 'recall';
   if (/^\/number-sequence$/i.test(normalized)) return 'numbers';
+  if (/^\/word-search$/i.test(normalized)) return 'wordsearch';
   return 'game';
 }
 
 function pathnameForPage(page: Page): string {
   switch (page) {
-    case 'game':      return '/';
-    case 'checker':   return '/WordChecker';
-    case 'scores':    return '/ScoreTracker';
-    case 'recall':    return '/recall';
-    case 'numbers':   return '/number-sequence';
+    case 'game':        return '/';
+    case 'checker':     return '/WordChecker';
+    case 'scores':      return '/ScoreTracker';
+    case 'recall':      return '/recall';
+    case 'numbers':     return '/number-sequence';
+    case 'wordsearch':  return '/word-search';
   }
 }
 
@@ -171,6 +174,7 @@ export default function App() {
         {page === 'scores' && <ScoreTracker />}
         {page === 'recall' && <SpanishRecall />}
         {page === 'numbers' && <NumberSequence />}
+        {page === 'wordsearch' && <WordSearch />}
       </div>
     </DictionaryProvider>
   );

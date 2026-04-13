@@ -1,6 +1,6 @@
 import { clsx } from 'clsx';
 
-type Page = 'game' | 'checker' | 'scores' | 'recall' | 'numbers';
+type Page = 'game' | 'checker' | 'scores' | 'recall' | 'numbers' | 'wordsearch';
 
 interface HeaderProps {
   page: Page;
@@ -13,6 +13,7 @@ const PAGE_LABELS: Record<Page, string> = {
   scores: 'Scores',
   recall: 'Recall',
   numbers: 'Numbers',
+  wordsearch: 'Word Search',
 };
 
 export function Header({ page, onNavigate }: HeaderProps) {
