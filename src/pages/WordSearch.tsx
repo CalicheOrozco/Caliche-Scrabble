@@ -402,7 +402,7 @@ export function WordSearch() {
         <div className="text-center">
           <h2 className="text-3xl font-bold text-slate-100">Word Search</h2>
           <p className="text-slate-400 text-sm mt-2">
-            Encuentra todas las palabras en español ocultas en la cuadrícula.
+            Find all the hidden Spanish words in the grid.
           </p>
         </div>
 
@@ -438,9 +438,9 @@ export function WordSearch() {
         </div>
 
         <div className="text-xs text-slate-600 text-center leading-relaxed max-w-xs">
-          {difficulty === 'easy' && 'Solo horizontal y vertical'}
-          {difficulty === 'medium' && 'Horizontal, vertical y diagonal'}
-          {difficulty === 'advanced' && 'Todas las direcciones, incluyendo al revés'}
+          {difficulty === 'easy' && 'Horizontal and vertical only'}
+          {difficulty === 'medium' && 'Horizontal, vertical and diagonal'}
+          {difficulty === 'advanced' && 'All directions, including backwards'}
         </div>
 
         <button
@@ -459,19 +459,19 @@ export function WordSearch() {
     return (
       <div className="flex-1 flex flex-col items-center justify-center gap-6 px-4 py-10 max-w-lg mx-auto w-full">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-slate-100">Completado!</h2>
-          {isNewRecord && <p className="text-yellow-400 font-semibold mt-1">Nuevo récord personal!</p>}
+          <h2 className="text-3xl font-bold text-slate-100">Completed!</h2>
+          {isNewRecord && <p className="text-yellow-400 font-semibold mt-1">New personal best!</p>}
         </div>
 
         <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-8 text-center w-full">
-          <p className="text-slate-400 text-sm uppercase tracking-wider">Tiempo</p>
+          <p className="text-slate-400 text-sm uppercase tracking-wider">Time</p>
           <p className="text-5xl font-extrabold text-white mt-2">{formatTime(finalMs)}</p>
           <p className="text-slate-500 text-sm mt-3">
-            {DIFF_CONFIG[difficulty].label} · {game?.placements.length} palabras
+            {DIFF_CONFIG[difficulty].label} · {game?.placements.length} words
           </p>
           {bestTimes[difficulty] !== null && (
             <p className="text-slate-400 text-sm mt-1">
-              Mejor: <span className="text-slate-200 font-semibold">{formatTime(bestTimes[difficulty]!)}</span>
+              Best: <span className="text-slate-200 font-semibold">{formatTime(bestTimes[difficulty]!)}</span>
             </p>
           )}
         </div>

@@ -113,7 +113,7 @@ export function SpanishRecall() {
         <div className="text-center">
           <h2 className="text-3xl font-bold text-slate-100">Spanish Recall</h2>
           <p className="text-slate-400 text-sm mt-2">
-            Se te mostrará la palabra en español. Escribe la traducción en inglés.
+            You will see the Spanish word. Type its English translation.
           </p>
         </div>
 
@@ -132,8 +132,8 @@ export function SpanishRecall() {
 
         <p className="text-slate-500 text-sm">
           {allItems.length > 0
-            ? `${allItems.length.toLocaleString()} palabras cargadas`
-            : 'Cargando palabras…'}
+            ? `${allItems.length.toLocaleString()} words loaded`
+            : 'Loading words…'}
         </p>
 
         <button
@@ -183,13 +183,13 @@ export function SpanishRecall() {
               </div>
               <div className="mt-2 flex flex-col sm:flex-row sm:items-center gap-2 text-sm">
                 <span className="text-slate-400 flex-1">
-                  Tu respuesta:{' '}
+                  Your answer:{' '}
                   <span className="text-slate-200 font-semibold">
-                    {r.userAnswer.trim() || '(vacío)'}
+                    {r.userAnswer.trim() || '(empty)'}
                   </span>
                 </span>
                 <span className="text-slate-400 flex-1">
-                  Correcto:{' '}
+                  Correct:{' '}
                   <span className="text-slate-200 font-semibold">{r.translate}</span>
                 </span>
                 <button
@@ -262,7 +262,7 @@ export function SpanishRecall() {
 
       <div className="w-full bg-slate-800 border border-slate-700 rounded-2xl p-8 flex flex-col items-center gap-4 text-center">
         <p className="text-slate-400 text-sm uppercase tracking-widest font-semibold">
-          Español
+          Spanish
         </p>
         <p className="text-4xl sm:text-5xl font-extrabold text-slate-100">
           {currentCard?.word}

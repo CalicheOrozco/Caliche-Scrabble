@@ -16,8 +16,9 @@ import { ScoreTracker } from './pages/ScoreTracker';
 import { SpanishRecall } from './pages/SpanishRecall';
 import { NumberSequence } from './pages/NumberSequence';
 import { WordSearch } from './pages/WordSearch';
+import { MemorySequence } from './pages/MemorySequence';
 
-type Page = 'game' | 'checker' | 'scores' | 'recall' | 'numbers' | 'wordsearch';
+type Page = 'game' | 'checker' | 'scores' | 'recall' | 'numbers' | 'wordsearch' | 'memory';
 
 function pageFromPathname(pathname: string): Page {
   const normalized = pathname.replace(/\/+$/, '');
@@ -26,6 +27,7 @@ function pageFromPathname(pathname: string): Page {
   if (/^\/recall$/i.test(normalized)) return 'recall';
   if (/^\/number-sequence$/i.test(normalized)) return 'numbers';
   if (/^\/word-search$/i.test(normalized)) return 'wordsearch';
+  if (/^\/memory-sequence$/i.test(normalized)) return 'memory';
   return 'game';
 }
 
@@ -37,6 +39,7 @@ function pathnameForPage(page: Page): string {
     case 'recall':      return '/recall';
     case 'numbers':     return '/number-sequence';
     case 'wordsearch':  return '/word-search';
+    case 'memory':      return '/memory-sequence';
   }
 }
 
@@ -175,6 +178,7 @@ export default function App() {
         {page === 'recall' && <SpanishRecall />}
         {page === 'numbers' && <NumberSequence />}
         {page === 'wordsearch' && <WordSearch />}
+        {page === 'memory' && <MemorySequence />}
       </div>
     </DictionaryProvider>
   );
