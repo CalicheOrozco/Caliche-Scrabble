@@ -1,6 +1,6 @@
 import { clsx } from 'clsx';
 
-type Page = 'game' | 'checker' | 'scores' | 'recall' | 'numbers' | 'wordsearch' | 'memory';
+type Page = 'game' | 'checker' | 'scores' | 'recall' | 'numbers' | 'wordsearch' | 'memory' | 'memoryinverse';
 
 interface HeaderProps {
   page: Page;
@@ -15,6 +15,7 @@ const PAGE_LABELS: Record<Page, string> = {
   numbers: 'Numbers',
   wordsearch: 'Word Search',
   memory: 'Memory Sequence',
+  memoryinverse: 'Memory Inverse',
 };
 
 export function Header({ page, onNavigate }: HeaderProps) {

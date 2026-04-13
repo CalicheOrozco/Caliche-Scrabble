@@ -17,8 +17,9 @@ import { SpanishRecall } from './pages/SpanishRecall';
 import { NumberSequence } from './pages/NumberSequence';
 import { WordSearch } from './pages/WordSearch';
 import { MemorySequence } from './pages/MemorySequence';
+import { MemoryInverse } from './pages/MemoryInverse';
 
-type Page = 'game' | 'checker' | 'scores' | 'recall' | 'numbers' | 'wordsearch' | 'memory';
+type Page = 'game' | 'checker' | 'scores' | 'recall' | 'numbers' | 'wordsearch' | 'memory' | 'memoryinverse';
 
 function pageFromPathname(pathname: string): Page {
   const normalized = pathname.replace(/\/+$/, '');
@@ -28,18 +29,20 @@ function pageFromPathname(pathname: string): Page {
   if (/^\/number-sequence$/i.test(normalized)) return 'numbers';
   if (/^\/word-search$/i.test(normalized)) return 'wordsearch';
   if (/^\/memory-sequence$/i.test(normalized)) return 'memory';
+  if (/^\/memory-inverse$/i.test(normalized)) return 'memoryinverse';
   return 'game';
 }
 
 function pathnameForPage(page: Page): string {
   switch (page) {
-    case 'game':        return '/';
-    case 'checker':     return '/WordChecker';
-    case 'scores':      return '/ScoreTracker';
-    case 'recall':      return '/recall';
-    case 'numbers':     return '/number-sequence';
-    case 'wordsearch':  return '/word-search';
-    case 'memory':      return '/memory-sequence';
+    case 'game':          return '/';
+    case 'checker':       return '/WordChecker';
+    case 'scores':        return '/ScoreTracker';
+    case 'recall':        return '/recall';
+    case 'numbers':       return '/number-sequence';
+    case 'wordsearch':    return '/word-search';
+    case 'memory':        return '/memory-sequence';
+    case 'memoryinverse': return '/memory-inverse';
   }
 }
 
@@ -179,6 +182,7 @@ export default function App() {
         {page === 'numbers' && <NumberSequence />}
         {page === 'wordsearch' && <WordSearch />}
         {page === 'memory' && <MemorySequence />}
+        {page === 'memoryinverse' && <MemoryInverse />}
       </div>
     </DictionaryProvider>
   );
