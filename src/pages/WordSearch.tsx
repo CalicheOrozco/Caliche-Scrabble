@@ -211,10 +211,10 @@ function checkSelection(cells: [number, number][], placements: WordPlacement[], 
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function WordSearch() {
+export function WordSearch({ initialDifficulty = 'easy' }: { initialDifficulty?: Difficulty }) {
   const [wordBank, setWordBank] = useState<Record<string, string[]>>({});
   const [phase, setPhase] = useState<Phase>('start');
-  const [difficulty, setDifficulty] = useState<Difficulty>('easy');
+  const [difficulty, setDifficulty] = useState<Difficulty>(initialDifficulty);
   const [game, setGame] = useState<GameState | null>(null);
   const [foundIds, setFoundIds] = useState<Set<string>>(new Set());
   const [selectedCells, setSelectedCells] = useState<[number, number][]>([]);

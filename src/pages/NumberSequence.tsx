@@ -61,8 +61,8 @@ type CellState = 'idle' | 'correct' | 'wrong';
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function NumberSequence() {
-  const [difficulty, setDifficulty] = useState<Difficulty>('easy');
+export function NumberSequence({ initialDifficulty = 'easy' }: { initialDifficulty?: Difficulty }) {
+  const [difficulty, setDifficulty] = useState<Difficulty>(initialDifficulty);
   const [phase, setPhase] = useState<Phase>('start');
   const [numbers, setNumbers] = useState<number[]>([]);
   const [nextTarget, setNextTarget] = useState(1);

@@ -177,8 +177,8 @@ function generateQuestion(card: CardData, diff: Difficulty): Question {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function StroopEffect() {
-  const [difficulty, setDifficulty] = useState<Difficulty>('easy');
+export function StroopEffect({ initialDifficulty = 'easy' }: { initialDifficulty?: Difficulty }) {
+  const [difficulty, setDifficulty] = useState<Difficulty>(initialDifficulty);
   const [showTime, setShowTime]     = useState(DIFF_CONFIG.easy.defaultShowTime);
   const [phase, setPhase]           = useState<Phase>('start');
   const [round, setRound]           = useState(0);

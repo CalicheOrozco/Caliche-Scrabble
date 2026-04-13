@@ -87,8 +87,8 @@ function saveBest(diff: Difficulty, score: number): boolean {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function MathProblems() {
-  const [difficulty, setDifficulty]     = useState<Difficulty>('easy');
+export function MathProblems({ initialDifficulty = 'easy' }: { initialDifficulty?: Difficulty }) {
+  const [difficulty, setDifficulty]     = useState<Difficulty>(initialDifficulty);
   const [phase, setPhase]               = useState<Phase>('start');
   const [problem, setProblem]           = useState<Problem | null>(null);
   const [input, setInput]               = useState('');

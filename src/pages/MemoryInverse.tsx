@@ -41,8 +41,8 @@ function randomNum(total: number) {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function MemoryInverse() {
-  const [difficulty, setDifficulty] = useState<Difficulty>('easy');
+export function MemoryInverse({ initialDifficulty = 'easy' }: { initialDifficulty?: Difficulty }) {
+  const [difficulty, setDifficulty] = useState<Difficulty>(initialDifficulty);
   const [phase, setPhase] = useState<Phase>('start');
   const [sequence, setSequence] = useState<number[]>([]);
   const [round, setRound] = useState(0);

@@ -21,9 +21,10 @@ import { MemoryInverse } from './pages/MemoryInverse';
 import { MathProblems } from './pages/MathProblems';
 import { FastCategory } from './pages/FastCategory';
 import { StroopEffect } from './pages/StroopEffect';
+import { ShuffleGame } from './pages/ShuffleGame';
 import { PracticeMenu } from './pages/MinigamesMenu';
 
-type Page = 'game' | 'minigames' | 'checker' | 'scores' | 'recall' | 'numbers' | 'wordsearch' | 'memory' | 'memoryinverse' | 'math' | 'fastcategory' | 'stroop';
+type Page = 'game' | 'minigames' | 'checker' | 'scores' | 'recall' | 'numbers' | 'wordsearch' | 'memory' | 'memoryinverse' | 'math' | 'fastcategory' | 'stroop' | 'shuffle';
 
 function pageFromPathname(pathname: string): Page {
   const normalized = pathname.replace(/\/+$/, '');
@@ -38,6 +39,7 @@ function pageFromPathname(pathname: string): Page {
   if (/^\/math-problems$/i.test(normalized)) return 'math';
   if (/^\/fast-category$/i.test(normalized)) return 'fastcategory';
   if (/^\/stroop-effect$/i.test(normalized)) return 'stroop';
+  if (/^\/shuffle$/i.test(normalized)) return 'shuffle';
   return 'game';
 }
 
@@ -55,6 +57,7 @@ function pathnameForPage(page: Page): string {
     case 'math':          return '/math-problems';
     case 'fastcategory':  return '/fast-category';
     case 'stroop':        return '/stroop-effect';
+    case 'shuffle':       return '/shuffle';
   }
 }
 
@@ -197,7 +200,7 @@ export default function App() {
     }
   };
 
-  const MINIGAME_PAGES: Page[] = ['numbers', 'wordsearch', 'memory', 'memoryinverse', 'math', 'fastcategory', 'stroop'];
+  const MINIGAME_PAGES: Page[] = ['numbers', 'wordsearch', 'memory', 'memoryinverse', 'math', 'fastcategory', 'stroop', 'shuffle'];
   const isMinigame = MINIGAME_PAGES.includes(page);
 
   return (
@@ -229,6 +232,7 @@ export default function App() {
         {page === 'math' && <MathProblems />}
         {page === 'fastcategory' && <FastCategory />}
         {page === 'stroop' && <StroopEffect />}
+        {page === 'shuffle' && <ShuffleGame />}
       </div>
     </DictionaryProvider>
   );

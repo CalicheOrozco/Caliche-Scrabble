@@ -79,9 +79,9 @@ function pickAudioMimeType(): string | null {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function FastCategory() {
+export function FastCategory({ initialDifficulty = 'easy' }: { initialDifficulty?: Difficulty }) {
   const [bank, setBank]               = useState<CategoryBank | null>(null);
-  const [difficulty, setDifficulty]   = useState<Difficulty>('easy');
+  const [difficulty, setDifficulty]   = useState<Difficulty>(initialDifficulty);
   const [phase, setPhase]             = useState<Phase>('start');
   const [queue, setQueue]             = useState<Category[]>([]);
   const [roundIndex, setRoundIndex]   = useState(0);
