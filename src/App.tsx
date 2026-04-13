@@ -14,27 +14,26 @@ import { ReviewModal } from './components/stats/ReviewModal';
 import { WordChecker } from './pages/WordChecker';
 import { ScoreTracker } from './pages/ScoreTracker';
 import { SpanishRecall } from './pages/SpanishRecall';
+import { NumberSequence } from './pages/NumberSequence';
 
-type Page = 'game' | 'checker' | 'scores' | 'recall';
+type Page = 'game' | 'checker' | 'scores' | 'recall' | 'numbers';
 
 function pageFromPathname(pathname: string): Page {
   const normalized = pathname.replace(/\/+$/, '');
   if (/^\/ScoreTracker$/i.test(normalized)) return 'scores';
   if (/^\/(WordChecker|checker)$/i.test(normalized)) return 'checker';
   if (/^\/recall$/i.test(normalized)) return 'recall';
+  if (/^\/number-sequence$/i.test(normalized)) return 'numbers';
   return 'game';
 }
 
 function pathnameForPage(page: Page): string {
   switch (page) {
-    case 'game':
-      return '/';
-    case 'checker':
-      return '/WordChecker';
-    case 'scores':
-      return '/ScoreTracker';
-    case 'recall':
-      return '/recall';
+    case 'game':      return '/';
+    case 'checker':   return '/WordChecker';
+    case 'scores':    return '/ScoreTracker';
+    case 'recall':    return '/recall';
+    case 'numbers':   return '/number-sequence';
   }
 }
 
@@ -171,6 +170,7 @@ export default function App() {
         {page === 'checker' && <WordChecker />}
         {page === 'scores' && <ScoreTracker />}
         {page === 'recall' && <SpanishRecall />}
+        {page === 'numbers' && <NumberSequence />}
       </div>
     </DictionaryProvider>
   );
