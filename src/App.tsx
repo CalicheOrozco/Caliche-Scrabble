@@ -19,8 +19,9 @@ import { WordSearch } from './pages/WordSearch';
 import { MemorySequence } from './pages/MemorySequence';
 import { MemoryInverse } from './pages/MemoryInverse';
 import { MathProblems } from './pages/MathProblems';
+import { FastCategory } from './pages/FastCategory';
 
-type Page = 'game' | 'checker' | 'scores' | 'recall' | 'numbers' | 'wordsearch' | 'memory' | 'memoryinverse' | 'math';
+type Page = 'game' | 'checker' | 'scores' | 'recall' | 'numbers' | 'wordsearch' | 'memory' | 'memoryinverse' | 'math' | 'fastcategory';
 
 function pageFromPathname(pathname: string): Page {
   const normalized = pathname.replace(/\/+$/, '');
@@ -32,6 +33,7 @@ function pageFromPathname(pathname: string): Page {
   if (/^\/memory-sequence$/i.test(normalized)) return 'memory';
   if (/^\/memory-inverse$/i.test(normalized)) return 'memoryinverse';
   if (/^\/math-problems$/i.test(normalized)) return 'math';
+  if (/^\/fast-category$/i.test(normalized)) return 'fastcategory';
   return 'game';
 }
 
@@ -46,6 +48,7 @@ function pathnameForPage(page: Page): string {
     case 'memory':        return '/memory-sequence';
     case 'memoryinverse': return '/memory-inverse';
     case 'math':          return '/math-problems';
+    case 'fastcategory':  return '/fast-category';
   }
 }
 
@@ -187,6 +190,7 @@ export default function App() {
         {page === 'memory' && <MemorySequence />}
         {page === 'memoryinverse' && <MemoryInverse />}
         {page === 'math' && <MathProblems />}
+        {page === 'fastcategory' && <FastCategory />}
       </div>
     </DictionaryProvider>
   );
