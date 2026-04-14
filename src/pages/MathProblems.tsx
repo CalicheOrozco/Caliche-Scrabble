@@ -313,28 +313,38 @@ export function MathProblems({ initialDifficulty = 'easy', autoStart = false }: 
 
       {/* Problem card */}
       <div className={`w-full border rounded-2xl p-8 text-center transition-colors duration-150 ${feedbackBg}`}>
-        {feedback === 'wrong' && (
-          <p className="text-red-400 text-sm font-semibold mb-2">
-            Answer was {problem?.answer}
-          </p>
+        {feedback ? (
+          <div className="py-4">
+            {feedback === 'correct' ? (
+              <p className="text-5xl font-extrabold text-emerald-400">✓</p>
+            ) : (
+              <>
+                <p className="text-5xl font-extrabold text-red-400">✗</p>
+                <p className="text-red-400 text-base font-semibold mt-2">
+                  Answer: {problem?.answer}
+                </p>
+              </>
+            )}
+          </div>
+        ) : (
+          <>
+            <p className="text-5xl sm:text-6xl font-extrabold text-slate-100 tracking-tight">
+              {problem?.display} =
+            </p>
+            <input
+              ref={inputRef}
+              type="number"
+              inputMode="numeric"
+              className="mt-6 w-full text-center text-3xl bg-slate-900 border border-slate-600 focus:border-indigo-500 focus:outline-none rounded-xl px-4 py-3 text-slate-100 placeholder:text-slate-600 transition-colors [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); submitAnswer(); } }}
+              placeholder="?"
+              autoComplete="off"
+            />
+            <p className="text-slate-600 text-xs mt-2">Press Enter to submit</p>
+          </>
         )}
-        <p className="text-5xl sm:text-6xl font-extrabold text-slate-100 tracking-tight">
-          {problem?.display} =
-        </p>
-
-        <input
-          ref={inputRef}
-          type="number"
-          inputMode="numeric"
-          className="mt-6 w-full text-center text-3xl bg-slate-900 border border-slate-600 focus:border-indigo-500 focus:outline-none rounded-xl px-4 py-3 text-slate-100 placeholder:text-slate-600 transition-colors [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); submitAnswer(); } }}
-          placeholder="?"
-          disabled={!!feedback}
-          autoComplete="off"
-        />
-        <p className="text-slate-600 text-xs mt-2">Press Enter to submit</p>
       </div>
 
       <button
