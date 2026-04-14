@@ -67,9 +67,9 @@ export function PracticeMenu({ onNavigate }: PracticeMenuProps) {
         <Card title="Math Problems"    icon={<GameIcon src="/math-problems-icon.jpg"    alt="Math Problems" />}    onClick={() => onNavigate('math')} />
         <Card title="Fast Category"    icon={<GameIcon src="/fast-category-icon.jpg"    alt="Fast Category" />}    onClick={() => onNavigate('fastcategory')} />
         <Card title="Stroop Effect"    icon={<GameIcon src="/stroop-effect-icon.jpg"    alt="Stroop Effect" />}    onClick={() => onNavigate('stroop')} />
-        <Card title="Emoji Memory"     icon={<EmojiIcon />}                                                         onClick={() => onNavigate('emojimemory')} />
-        <Card title="Word Flash"       icon={<WordFlashIcon />}                                                      onClick={() => onNavigate('wordflash')} />
-        <Card title="Shuffle"          icon={<ShuffleIcon />}                                                       onClick={() => onNavigate('shuffle')} />
+        <Card title="Emoji Memory"     icon={<GameIcon src="/emoji-memory-icon.jpg"    alt="Emoji Memory" />}        onClick={() => onNavigate('emojimemory')} />
+        <Card title="Word Flash"       icon={<GameIcon src="/word-flash-icon.jpg"  alt="Word Flash" />}        onClick={() => onNavigate('wordflash')} />
+        <Card title="Shuffle"          icon={<ShuffleIcon/>}                                                       onClick={() => onNavigate('shuffle')} />
       </div>
     </main>
   );
