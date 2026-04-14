@@ -10,22 +10,6 @@ function GameIcon({ src, alt }: { src: string; alt: string }) {
   );
 }
 
-function EmojiIcon() {
-  return (
-    <div className="w-14 h-14 rounded-xl bg-pink-600/20 border border-pink-500/30 flex items-center justify-center shrink-0 text-2xl">
-      🃏
-    </div>
-  );
-}
-
-function WordFlashIcon() {
-  return (
-    <div className="w-14 h-14 rounded-xl bg-yellow-600/20 border border-yellow-500/30 flex items-center justify-center shrink-0 text-2xl">
-      ⚡
-    </div>
-  );
-}
-
 function ShuffleIcon() {
   return (
     <div className="w-14 h-14 rounded-xl bg-indigo-600/30 border border-indigo-500/40 flex items-center justify-center shrink-0 text-2xl">
