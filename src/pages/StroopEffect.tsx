@@ -177,7 +177,7 @@ function generateQuestion(card: CardData, diff: Difficulty): Question {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function StroopEffect({ initialDifficulty = 'easy' }: { initialDifficulty?: Difficulty }) {
+export function StroopEffect({ initialDifficulty = 'easy', autoStart = false }: { initialDifficulty?: Difficulty; autoStart?: boolean }) {
   const [difficulty, setDifficulty] = useState<Difficulty>(initialDifficulty);
   const [showTime, setShowTime]     = useState(DIFF_CONFIG.easy.defaultShowTime);
   const [phase, setPhase]           = useState<Phase>('start');
@@ -232,6 +232,8 @@ export function StroopEffect({ initialDifficulty = 'easy' }: { initialDifficulty
     setIsNewRecord(false);
     startRound(1, difficulty, showTime);
   };
+
+  useEffect(() => { if (autoStart) setTimeout(handleStart, 0); }, [autoStart]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleAnswer = (option: string) => {
     if (!question || phase !== 'question') return;

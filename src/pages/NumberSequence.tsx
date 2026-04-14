@@ -61,7 +61,7 @@ type CellState = 'idle' | 'correct' | 'wrong';
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function NumberSequence({ initialDifficulty = 'easy' }: { initialDifficulty?: Difficulty }) {
+export function NumberSequence({ initialDifficulty = 'easy', autoStart = false }: { initialDifficulty?: Difficulty; autoStart?: boolean }) {
   const [difficulty, setDifficulty] = useState<Difficulty>(initialDifficulty);
   const [phase, setPhase] = useState<Phase>('start');
   const [numbers, setNumbers] = useState<number[]>([]);
@@ -107,6 +107,8 @@ export function NumberSequence({ initialDifficulty = 'easy' }: { initialDifficul
     rafRef.current = requestAnimationFrame(tick);
     setPhase('playing');
   };
+
+  useEffect(() => { if (autoStart) startGame(); }, [autoStart]);
 
   const handleCellClick = (num: number) => {
     if (phase !== 'playing') return;

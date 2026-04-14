@@ -38,13 +38,13 @@ export function ShuffleGame() {
 
   if (selectedGame) {
     switch (selectedGame) {
-      case 'numbers':       return <NumberSequence initialDifficulty={difficulty} />;
-      case 'wordsearch':    return <WordSearch initialDifficulty={difficulty} />;
-      case 'memory':        return <MemorySequence initialDifficulty={difficulty} />;
-      case 'memoryinverse': return <MemoryInverse initialDifficulty={difficulty} />;
-      case 'math':          return <MathProblems initialDifficulty={difficulty} />;
-      case 'fastcategory':  return <FastCategory initialDifficulty={difficulty} />;
-      case 'stroop':        return <StroopEffect initialDifficulty={difficulty} />;
+      case 'numbers':       return <NumberSequence initialDifficulty={difficulty} autoStart />;
+      case 'wordsearch':    return <WordSearch initialDifficulty={difficulty} autoStart />;
+      case 'memory':        return <MemorySequence initialDifficulty={difficulty} autoStart />;
+      case 'memoryinverse': return <MemoryInverse initialDifficulty={difficulty} autoStart />;
+      case 'math':          return <MathProblems initialDifficulty={difficulty} autoStart />;
+      case 'fastcategory':  return <FastCategory initialDifficulty={difficulty} autoStart />;
+      case 'stroop':        return <StroopEffect initialDifficulty={difficulty} autoStart />;
     }
   }
 

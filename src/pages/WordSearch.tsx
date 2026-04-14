@@ -211,7 +211,7 @@ function checkSelection(cells: [number, number][], placements: WordPlacement[], 
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function WordSearch({ initialDifficulty = 'easy' }: { initialDifficulty?: Difficulty }) {
+export function WordSearch({ initialDifficulty = 'easy', autoStart = false }: { initialDifficulty?: Difficulty; autoStart?: boolean }) {
   const [wordBank, setWordBank] = useState<Record<string, string[]>>({});
   const [phase, setPhase] = useState<Phase>('start');
   const [difficulty, setDifficulty] = useState<Difficulty>(initialDifficulty);
@@ -302,6 +302,10 @@ export function WordSearch({ initialDifficulty = 'easy' }: { initialDifficulty?:
     () => new Set((flashInfo?.cells ?? []).map(([r, c]) => cellKey(r, c))),
     [flashInfo]
   );
+
+  useEffect(() => {
+    if (autoStart && Object.keys(wordBank).length > 0) setTimeout(startGame, 0);
+  }, [autoStart, wordBank]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const startGame = () => {
     if (!wordBank) return;

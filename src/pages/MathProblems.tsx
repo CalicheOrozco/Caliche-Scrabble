@@ -87,7 +87,7 @@ function saveBest(diff: Difficulty, score: number): boolean {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function MathProblems({ initialDifficulty = 'easy' }: { initialDifficulty?: Difficulty }) {
+export function MathProblems({ initialDifficulty = 'easy', autoStart = false }: { initialDifficulty?: Difficulty; autoStart?: boolean }) {
   const [difficulty, setDifficulty]     = useState<Difficulty>(initialDifficulty);
   const [phase, setPhase]               = useState<Phase>('start');
   const [problem, setProblem]           = useState<Problem | null>(null);
@@ -140,6 +140,8 @@ export function MathProblems({ initialDifficulty = 'easy' }: { initialDifficulty
 
     setTimeout(() => inputRef.current?.focus(), 50);
   };
+
+  useEffect(() => { if (autoStart) startGame(); }, [autoStart]);
 
   // Called when user submits an answer (Enter key or button)
   const submitAnswer = () => {

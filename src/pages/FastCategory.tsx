@@ -79,7 +79,7 @@ function pickAudioMimeType(): string | null {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function FastCategory({ initialDifficulty = 'easy' }: { initialDifficulty?: Difficulty }) {
+export function FastCategory({ initialDifficulty = 'easy', autoStart = false }: { initialDifficulty?: Difficulty; autoStart?: boolean }) {
   const [bank, setBank]               = useState<CategoryBank | null>(null);
   const [difficulty, setDifficulty]   = useState<Difficulty>(initialDifficulty);
   const [phase, setPhase]             = useState<Phase>('start');
@@ -135,6 +135,10 @@ export function FastCategory({ initialDifficulty = 'easy' }: { initialDifficulty
     setIsNewRecord(false);
     setPhase('ready');
   };
+
+  useEffect(() => {
+    if (autoStart && bank) setTimeout(startGame, 0);
+  }, [autoStart, bank]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Start recording ─────────────────────────────────────────────────────────
   const startRecording = async () => {

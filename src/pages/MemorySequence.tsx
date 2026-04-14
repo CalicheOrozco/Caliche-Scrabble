@@ -41,7 +41,7 @@ function randomNum(total: number) {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function MemorySequence({ initialDifficulty = 'easy' }: { initialDifficulty?: Difficulty }) {
+export function MemorySequence({ initialDifficulty = 'easy', autoStart = false }: { initialDifficulty?: Difficulty; autoStart?: boolean }) {
   const [difficulty, setDifficulty] = useState<Difficulty>(initialDifficulty);
   const [phase, setPhase] = useState<Phase>('start');
   const [sequence, setSequence] = useState<number[]>([]);
@@ -103,6 +103,8 @@ export function MemorySequence({ initialDifficulty = 'easy' }: { initialDifficul
     setIsNewRecord(false);
     playSequence(seq, cfg);
   };
+
+  useEffect(() => { if (autoStart) startGame(); }, [autoStart]);
 
   const handleCellClick = (num: number) => {
     if (phase !== 'waiting') return;
