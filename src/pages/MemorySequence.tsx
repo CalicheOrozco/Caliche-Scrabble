@@ -48,6 +48,7 @@ export function MemorySequence({ initialDifficulty = 'easy', autoStart = false }
   const [round, setRound] = useState(0);          // current sequence length shown
   const [userInput, setUserInput] = useState<number[]>([]);
   const [activeCell, setActiveCell] = useState<number | null>(null);
+  const [lastTapped, setLastTapped] = useState<number | null>(null);
   const [flashWrong, setFlashWrong] = useState<number | null>(null);
   const [flashCorrect, setFlashCorrect] = useState(false);
   const [isNewRecord, setIsNewRecord] = useState(false);
@@ -74,21 +75,28 @@ export function MemorySequence({ initialDifficulty = 'easy', autoStart = false }
     setUserInput([]);
     setActiveCell(null);
 
-    let delay = 400; // initial pause before starting
-    for (let i = 0; i < seq.length; i++) {
-      const num = seq[i];
-      // Light up
-      schedule(() => setActiveCell(num), delay);
-      delay += cfg.showMs;
-      // Dim
-      schedule(() => setActiveCell(null), delay);
-      delay += cfg.pauseMs;
-    }
-    // Switch to waiting
-    schedule(() => {
-      setActiveCell(null);
-      setPhase('waiting');
-    }, delay);
+    // Chained timeouts instead of pre-scheduled absolute delays.
+    // On mobile browsers, batched absolute-delay timeouts can fire together;
+    // chaining ensures each step waits for the previous one to complete.
+    const playStep = (index: number) => {
+      if (index >= seq.length) {
+        schedule(() => {
+          setActiveCell(null);
+          setPhase('waiting');
+        }, cfg.pauseMs);
+        return;
+      }
+      const num = seq[index];
+      schedule(() => {
+        setActiveCell(num);
+        schedule(() => {
+          setActiveCell(null);
+          playStep(index + 1);
+        }, cfg.showMs);
+      }, index === 0 ? 400 : cfg.pauseMs);
+    };
+
+    playStep(0);
   };
 
   const startGame = () => {
@@ -111,6 +119,10 @@ export function MemorySequence({ initialDifficulty = 'easy', autoStart = false }
     const cfg = DIFF_CONFIG[difficulty];
     const nextInput = [...userInput, num];
     const pos = nextInput.length - 1;
+
+    // Immediate tap feedback
+    setLastTapped(num);
+    schedule(() => setLastTapped(null), 200);
 
     if (num !== sequence[pos]) {
       // Wrong
@@ -288,7 +300,10 @@ export function MemorySequence({ initialDifficulty = 'easy', autoStart = false }
           const isWrong = flashWrong === num;
           const isCorrectFlash = flashCorrect && userInput.includes(num);
 
+          const isTapped = lastTapped === num;
+
           let style = 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700 hover:border-slate-500';
+          if (isTapped)        style = 'bg-slate-500 border-slate-400 text-white scale-95';
           if (isActive)        style = 'bg-indigo-500 border-indigo-400 text-white scale-105 shadow-lg shadow-indigo-500/40';
           if (isCorrectFlash)  style = 'bg-emerald-500 border-emerald-400 text-white';
           if (isWrong)         style = 'bg-red-500 border-red-400 text-white';
@@ -296,7 +311,7 @@ export function MemorySequence({ initialDifficulty = 'easy', autoStart = false }
           return (
             <button
               key={num}
-              onClick={() => handleCellClick(num)}
+              onPointerDown={(e) => { e.preventDefault(); handleCellClick(num); }}
               disabled={phase !== 'waiting'}
               className={`
                 aspect-square flex items-center justify-center rounded-xl border-2
