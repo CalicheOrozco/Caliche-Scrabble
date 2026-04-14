@@ -22,9 +22,10 @@ import { MathProblems } from './pages/MathProblems';
 import { FastCategory } from './pages/FastCategory';
 import { StroopEffect } from './pages/StroopEffect';
 import { ShuffleGame } from './pages/ShuffleGame';
+import { EmojiMemory } from './pages/EmojiMemory';
 import { PracticeMenu } from './pages/MinigamesMenu';
 
-type Page = 'game' | 'minigames' | 'checker' | 'scores' | 'recall' | 'numbers' | 'wordsearch' | 'memory' | 'memoryinverse' | 'math' | 'fastcategory' | 'stroop' | 'shuffle';
+type Page = 'game' | 'minigames' | 'checker' | 'scores' | 'recall' | 'numbers' | 'wordsearch' | 'memory' | 'memoryinverse' | 'math' | 'fastcategory' | 'stroop' | 'shuffle' | 'emojimemory';
 
 function pageFromPathname(pathname: string): Page {
   const normalized = pathname.replace(/\/+$/, '');
@@ -40,6 +41,7 @@ function pageFromPathname(pathname: string): Page {
   if (/^\/fast-category$/i.test(normalized)) return 'fastcategory';
   if (/^\/stroop-effect$/i.test(normalized)) return 'stroop';
   if (/^\/shuffle$/i.test(normalized)) return 'shuffle';
+  if (/^\/emoji-memory$/i.test(normalized)) return 'emojimemory';
   return 'game';
 }
 
@@ -58,6 +60,7 @@ function pathnameForPage(page: Page): string {
     case 'fastcategory':  return '/fast-category';
     case 'stroop':        return '/stroop-effect';
     case 'shuffle':       return '/shuffle';
+    case 'emojimemory':   return '/emoji-memory';
   }
 }
 
@@ -200,7 +203,7 @@ export default function App() {
     }
   };
 
-  const MINIGAME_PAGES: Page[] = ['numbers', 'wordsearch', 'memory', 'memoryinverse', 'math', 'fastcategory', 'stroop', 'shuffle'];
+  const MINIGAME_PAGES: Page[] = ['numbers', 'wordsearch', 'memory', 'memoryinverse', 'math', 'fastcategory', 'stroop', 'shuffle', 'emojimemory'];
   const isMinigame = MINIGAME_PAGES.includes(page);
 
   return (
@@ -233,6 +236,7 @@ export default function App() {
         {page === 'fastcategory' && <FastCategory />}
         {page === 'stroop' && <StroopEffect />}
         {page === 'shuffle' && <ShuffleGame />}
+        {page === 'emojimemory' && <EmojiMemory />}
       </div>
     </DictionaryProvider>
   );

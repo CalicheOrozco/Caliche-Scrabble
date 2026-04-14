@@ -81,6 +81,7 @@ export function NumberSequence({ initialDifficulty = 'easy', autoStart = false }
   const tick = useCallback(() => {
     if (startTimeRef.current !== null) {
       setElapsedMs(Date.now() - startTimeRef.current);
+      // eslint-disable-next-line react-hooks/immutability
       rafRef.current = requestAnimationFrame(tick);
     }
   }, []);
@@ -108,7 +109,7 @@ export function NumberSequence({ initialDifficulty = 'easy', autoStart = false }
     setPhase('playing');
   };
 
-  useEffect(() => { if (autoStart) startGame(); }, [autoStart]);
+  useEffect(() => { if (autoStart) setTimeout(startGame, 0); }, [autoStart]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleCellClick = (num: number) => {
     if (phase !== 'playing') return;
@@ -120,7 +121,7 @@ export function NumberSequence({ initialDifficulty = 'easy', autoStart = false }
       if (num === count) {
         // Finished
         stopTimer();
-        const elapsed = Date.now() - startTimeRef.current!;
+        const elapsed = Date.now() - startTimeRef.current!; // eslint-disable-line react-hooks/purity
         setFinalMs(elapsed);
         const newRecord = saveBestTime(difficulty, elapsed);
         setIsNewRecord(newRecord);

@@ -272,7 +272,7 @@ export function WordSearch({ initialDifficulty = 'easy', autoStart = false }: { 
       rafRef.current = requestAnimationFrame(tickRef.current);
     }
   }, []);
-  tickRef.current = tick;
+  useEffect(() => { tickRef.current = tick; });
 
   const stopTimer = useCallback(() => {
     if (rafRef.current !== null) {
@@ -303,10 +303,6 @@ export function WordSearch({ initialDifficulty = 'easy', autoStart = false }: { 
     [flashInfo]
   );
 
-  useEffect(() => {
-    if (autoStart && Object.keys(wordBank).length > 0) setTimeout(startGame, 0);
-  }, [autoStart, wordBank]); // eslint-disable-line react-hooks/exhaustive-deps
-
   const startGame = () => {
     if (!wordBank) return;
     const cfg = DIFF_CONFIG[difficulty];
@@ -329,6 +325,10 @@ export function WordSearch({ initialDifficulty = 'easy', autoStart = false }: { 
     rafRef.current = requestAnimationFrame(tick);
     setPhase('playing');
   };
+
+  useEffect(() => {
+    if (autoStart && Object.keys(wordBank).length > 0) setTimeout(startGame, 0);
+  }, [autoStart, wordBank]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Pointer handlers
   const getCellFromPoint = (x: number, y: number): [number, number] | null => {

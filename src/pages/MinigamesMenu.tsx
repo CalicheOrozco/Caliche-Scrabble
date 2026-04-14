@@ -1,4 +1,4 @@
-type TargetPage = 'wordsearch' | 'memory' | 'memoryinverse' | 'math' | 'fastcategory' | 'numbers' | 'stroop' | 'shuffle';
+type TargetPage = 'wordsearch' | 'memory' | 'memoryinverse' | 'math' | 'fastcategory' | 'numbers' | 'stroop' | 'shuffle' | 'emojimemory';
 
 interface PracticeMenuProps {
   onNavigate: (page: TargetPage) => void;
@@ -7,6 +7,14 @@ interface PracticeMenuProps {
 function GameIcon({ src, alt }: { src: string; alt: string }) {
   return (
     <img src={src} alt={alt} className="w-14 h-14 rounded-xl object-cover shrink-0" />
+  );
+}
+
+function EmojiIcon() {
+  return (
+    <div className="w-14 h-14 rounded-xl bg-pink-600/20 border border-pink-500/30 flex items-center justify-center shrink-0 text-2xl">
+      🃏
+    </div>
   );
 }
 
@@ -51,6 +59,7 @@ export function PracticeMenu({ onNavigate }: PracticeMenuProps) {
         <Card title="Math Problems"    icon={<GameIcon src="/math-problems-icon.jpg"    alt="Math Problems" />}    onClick={() => onNavigate('math')} />
         <Card title="Fast Category"    icon={<GameIcon src="/fast-category-icon.jpg"    alt="Fast Category" />}    onClick={() => onNavigate('fastcategory')} />
         <Card title="Stroop Effect"    icon={<GameIcon src="/stroop-effect-icon.jpg"    alt="Stroop Effect" />}    onClick={() => onNavigate('stroop')} />
+        <Card title="Emoji Memory"     icon={<EmojiIcon />}                                                         onClick={() => onNavigate('emojimemory')} />
         <Card title="Shuffle"          icon={<ShuffleIcon />}                                                       onClick={() => onNavigate('shuffle')} />
       </div>
     </main>

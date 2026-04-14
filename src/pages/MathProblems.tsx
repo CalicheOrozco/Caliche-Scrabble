@@ -141,7 +141,7 @@ export function MathProblems({ initialDifficulty = 'easy', autoStart = false }: 
     setTimeout(() => inputRef.current?.focus(), 50);
   };
 
-  useEffect(() => { if (autoStart) startGame(); }, [autoStart]);
+  useEffect(() => { if (autoStart) setTimeout(startGame, 0); }, [autoStart]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Called when user submits an answer (Enter key or button)
   const submitAnswer = () => {
@@ -163,11 +163,13 @@ export function MathProblems({ initialDifficulty = 'easy', autoStart = false }: 
   // When game finishes save best
   useEffect(() => {
     if (phase === 'finished') {
-      const newRecord = saveBest(difficulty, correct);
-      setIsNewRecord(newRecord);
-      setBestScores(loadBest());
+      setTimeout(() => {
+        const newRecord = saveBest(difficulty, correct);
+        setIsNewRecord(newRecord);
+        setBestScores(loadBest());
+      }, 0);
     }
-  }, [phase]);
+  }, [phase]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const cfg = DIFF_CONFIG[difficulty];
   const timerPct = (timeLeft / cfg.timeLimit) * 100;

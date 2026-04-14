@@ -110,7 +110,7 @@ export function MemoryInverse({ initialDifficulty = 'easy', autoStart = false }:
     playSequence(seq, cfg);
   };
 
-  useEffect(() => { if (autoStart) startGame(); }, [autoStart]);
+  useEffect(() => { if (autoStart) setTimeout(startGame, 0); }, [autoStart]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleCellClick = (num: number) => {
     if (phase !== 'waiting') return;
