@@ -6,10 +6,10 @@ type Difficulty = 'easy' | 'medium' | 'advanced';
 type Phase = 'start' | 'playing' | 'finished';
 
 const EMOJIS = [
-  '🐶','🐱','🐭','🐰','🦊','🐻','🐼','🐨',
-  '🐯','🦁','🐮','🐷','🐸','🐙','🦋','🐬',
-  '🦄','🦓','🦒','🦘','🦔','🦦','🐝','🦜',
-  '🦩','🦚','🐲','🦈','🦭','🦧',
+  '😀','😂','😍','😎','🤔','😴','🥰','😱',
+  '🤩','🥳','🍕','🍔','🌮','🍦','🎂','🍩',
+  '⭐','🔥','💎','🎮','⚽','🎸','🌈','🎯',
+  '👍','🌸','🇲🇽','🎃','🎁','🏆','🇨🇦',
 ] as const;
 
 const DIFF_CONFIG: Record<Difficulty, {
@@ -242,7 +242,7 @@ export function EmojiMemory({ initialDifficulty = 'easy', autoStart = false }: {
 
   // ── Playing screen ────────────────────────────────────────────────────────
   return (
-    <div className="flex-1 flex flex-col items-center gap-4 px-3 py-6 max-w-sm mx-auto w-full">
+    <div className="flex-1 flex flex-col items-center gap-4 px-2 py-6 w-full max-w-lg mx-auto">
       {/* Header */}
       <div className="w-full flex items-center justify-between">
         <span className="text-slate-400 text-sm">
@@ -262,7 +262,7 @@ export function EmojiMemory({ initialDifficulty = 'easy', autoStart = false }: {
 
       {/* Grid */}
       <div
-        className="grid gap-2 w-full"
+        className="grid gap-2.5 w-full"
         style={{ gridTemplateColumns: `repeat(${cfg.cols}, minmax(0, 1fr))` }}
       >
         {cards.map((card) => {
@@ -284,8 +284,8 @@ export function EmojiMemory({ initialDifficulty = 'easy', autoStart = false }: {
               `}
             >
               {visible
-                ? <span className={cfg.cols === 5 ? 'text-xl' : 'text-2xl'}>{card.emoji}</span>
-                : <span className="text-slate-600 text-lg font-bold">?</span>
+                ? <span className={cfg.cols === 5 ? 'text-2xl sm:text-3xl' : 'text-3xl sm:text-4xl'}>{card.emoji}</span>
+                : <span className="text-slate-600 text-xl font-bold">?</span>
               }
             </button>
           );
