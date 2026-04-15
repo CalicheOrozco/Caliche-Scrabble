@@ -12,7 +12,7 @@ export default defineConfig({
       includeAssets: ['favicon-512.png', 'dicts/en.json', 'dicts/es.json'],
       manifest: {
         name: 'Caliche Scrabble',
-        short_name: 'Scrabble',
+        short_name: 'Caliche Scrabble',
         description: 'Anagram practice app — EN & ES',
         theme_color: '#0f172a',
         background_color: '#ffffff',
