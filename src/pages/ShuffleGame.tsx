@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { NumberSequence } from './NumberSequence';
 import { WordSearch } from './WordSearch';
 import { MemorySequence } from './MemorySequence';
@@ -38,17 +38,49 @@ export function ShuffleGame() {
   const [difficulty, setDifficulty] = useState<Difficulty>('easy');
   const [selectedGame, setSelectedGame] = useState<GameId | null>(null);
 
+  const handleNewShuffle = () => {
+    const others = GAMES.filter(g => g !== selectedGame);
+    setSelectedGame(pickRandom(others));
+  };
+
   if (selectedGame) {
+    let game: ReactNode;
     switch (selectedGame) {
-      case 'numbers':       return <NumberSequence initialDifficulty={difficulty} autoStart />;
-      case 'wordsearch':    return <WordSearch initialDifficulty={difficulty} autoStart />;
-      case 'memory':        return <MemorySequence initialDifficulty={difficulty} autoStart />;
-      case 'memoryinverse': return <MemoryInverse initialDifficulty={difficulty} autoStart />;
-      case 'math':          return <MathProblems initialDifficulty={difficulty} autoStart />;
-      case 'fastcategory':  return <FastCategory initialDifficulty={difficulty} autoStart />;
-      case 'stroop':        return <StroopEffect initialDifficulty={difficulty} autoStart />;
-      case 'emojimemory':   return <EmojiMemory initialDifficulty={difficulty} autoStart />;
+      case 'numbers':       game = <NumberSequence initialDifficulty={difficulty} autoStart />; break;
+      case 'wordsearch':    game = <WordSearch initialDifficulty={difficulty} autoStart />; break;
+      case 'memory':        game = <MemorySequence initialDifficulty={difficulty} autoStart />; break;
+      case 'memoryinverse': game = <MemoryInverse initialDifficulty={difficulty} autoStart />; break;
+      case 'math':          game = <MathProblems initialDifficulty={difficulty} autoStart />; break;
+      case 'fastcategory':  game = <FastCategory initialDifficulty={difficulty} autoStart />; break;
+      case 'stroop':        game = <StroopEffect initialDifficulty={difficulty} autoStart />; break;
+      case 'emojimemory':   game = <EmojiMemory initialDifficulty={difficulty} autoStart />; break;
     }
+
+    return (
+      <div className="flex-1 flex flex-col min-h-0">
+        {/* Shuffle bar */}
+        <div className="shrink-0 flex items-center justify-between px-4 py-2 bg-slate-900/80 border-b border-slate-800">
+          <span className="text-slate-500 text-xs font-semibold uppercase tracking-wider">
+            🎲 {GAME_LABELS[selectedGame]}
+          </span>
+          <div className="flex gap-2">
+            <button
+              onClick={handleNewShuffle}
+              className="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
+            >
+              New shuffle
+            </button>
+            <button
+              onClick={() => setSelectedGame(null)}
+              className="bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
+            >
+              Menu
+            </button>
+          </div>
+        </div>
+        {game}
+      </div>
+    );
   }
 
   return (
