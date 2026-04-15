@@ -98,6 +98,7 @@ export function MathProblems({ initialDifficulty = 'easy', autoStart = false }: 
   const [feedback, setFeedback]         = useState<'correct' | 'wrong' | null>(null);
   const [isNewRecord, setIsNewRecord]   = useState(false);
   const [bestScores, setBestScores]     = useState<Record<Difficulty, number>>(loadBest);
+  const [questionKey, setQuestionKey]   = useState(0);
 
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const inputRef    = useRef<HTMLInputElement>(null);
@@ -112,7 +113,7 @@ export function MathProblems({ initialDifficulty = 'easy', autoStart = false }: 
   const nextProblem = () => {
     setProblem(generateProblem(difficulty));
     setInput('');
-    inputRef.current?.focus();
+    setQuestionKey((k) => k + 1);
   };
 
   const startGame = () => {
@@ -127,6 +128,8 @@ export function MathProblems({ initialDifficulty = 'easy', autoStart = false }: 
     setInput('');
     setPhase('playing');
 
+    setQuestionKey((k) => k + 1);
+
     intervalRef.current = setInterval(() => {
       setTimeLeft((t) => {
         if (t <= 1) {
@@ -137,8 +140,6 @@ export function MathProblems({ initialDifficulty = 'easy', autoStart = false }: 
         return t - 1;
       });
     }, 1000);
-
-    setTimeout(() => inputRef.current?.focus(), 50);
   };
 
   useEffect(() => { if (autoStart) setTimeout(startGame, 0); }, [autoStart]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -334,9 +335,12 @@ export function MathProblems({ initialDifficulty = 'easy', autoStart = false }: 
               {problem?.display} =
             </p>
             <input
+              key={questionKey}
               ref={inputRef}
               type="number"
               inputMode="numeric"
+              pattern="[0-9]*"
+              autoFocus
               className="mt-6 w-full text-center text-3xl bg-slate-900 border border-slate-600 focus:border-indigo-500 focus:outline-none rounded-xl px-4 py-3 text-slate-100 placeholder:text-slate-600 transition-colors [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none"
               value={input}
               onChange={(e) => setInput(e.target.value)}
