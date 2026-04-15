@@ -503,12 +503,11 @@ export function WordSearch({ initialDifficulty = 'easy', autoStart = false }: { 
 
   const remaining = game.placements.length - foundIds.size;
   const cfg = DIFF_CONFIG[difficulty];
-  const cellSizeClass = cfg.cols >= 17 ? 'text-xs' : cfg.cols >= 13 ? 'text-sm' : 'text-base';
 
   return (
-    <div className="flex-1 flex flex-col items-center gap-3 px-2 py-4 w-full">
+    <div className="flex-1 flex flex-col overflow-hidden px-2 py-3 w-full gap-2">
       {/* Top bar */}
-      <div className="w-full max-w-2xl flex items-center justify-between px-2">
+      <div className="shrink-0 w-full flex items-center justify-between px-1">
         <span className="text-slate-400 text-sm">
           <span className="text-white font-bold">{remaining}</span> left
         </span>
@@ -523,12 +522,15 @@ export function WordSearch({ initialDifficulty = 'easy', autoStart = false }: { 
         </button>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-4 w-full max-w-2xl items-start justify-center">
-        {/* Grid */}
+      <div className="flex-1 min-h-0 flex flex-col lg:flex-row gap-3 items-center lg:items-start justify-center">
+        {/* Grid — auto-sizes to fit screen width, cells are always square */}
         <div
           ref={gridRef}
-          className="select-none rounded-xl overflow-hidden border border-slate-700 shrink-0"
-          style={{ touchAction: 'none' }}
+          className="select-none rounded-xl overflow-hidden border border-slate-700 shrink-0 w-full lg:w-auto"
+          style={{
+            touchAction: 'none',
+            maxWidth: `min(100%, calc(100dvh - 200px))`,
+          }}
           onPointerDown={handleGridPointerDown}
           onPointerMove={handleGridPointerMove}
           onPointerUp={handleGridPointerUp}
@@ -556,18 +558,13 @@ export function WordSearch({ initialDifficulty = 'easy', autoStart = false }: { 
                   ? 'text-white'
                   : 'text-slate-300';
 
-                const size = cfg.cols >= 17 ? 'w-9 h-9' : cfg.cols >= 13 ? 'w-10 h-10' : 'w-11 h-11';
-
                 return (
                   <div
                     key={key}
                     data-row={r}
                     data-col={c}
-                    className={`
-                      ${size} flex items-center justify-center
-                      font-bold ${cellSizeClass} ${bg} ${textColor}
-                      border border-slate-700/40 transition-colors duration-75 cursor-default
-                    `}
+                    className={`aspect-square flex items-center justify-center font-bold ${bg} ${textColor} border border-slate-700/40 transition-colors duration-75 cursor-default`}
+                    style={{ fontSize: `clamp(9px, calc(90vw / ${game.cols}), ${cfg.cols >= 17 ? 15 : cfg.cols >= 13 ? 17 : 20}px)` }}
                   >
                     {cell.letter}
                   </div>
@@ -577,28 +574,26 @@ export function WordSearch({ initialDifficulty = 'easy', autoStart = false }: { 
           </div>
         </div>
 
-        {/* Word list */}
-        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4 w-full lg:w-48 shrink-0">
-          <p className="text-slate-400 text-xs uppercase tracking-wider font-semibold mb-3">
+        {/* Word list — horizontal wrap on mobile, vertical sidebar on desktop */}
+        <div className="shrink-0 w-full lg:w-48 bg-slate-800/50 border border-slate-700 rounded-xl p-3">
+          <p className="text-slate-400 text-xs uppercase tracking-wider font-semibold mb-2">
             Words to find
           </p>
-          <ul className="space-y-1.5">
+          <div className="flex flex-wrap gap-x-4 gap-y-1 lg:flex-col lg:gap-x-0 lg:space-y-1.5">
             {game.placements.map((p) => {
               const found = foundIds.has(p.id);
               return (
-                <li
+                <span
                   key={p.id}
                   className={`text-sm font-semibold tracking-wide ${
-                    found
-                      ? 'text-emerald-400 line-through opacity-60'
-                      : 'text-slate-200'
+                    found ? 'text-emerald-400 line-through opacity-60' : 'text-slate-200'
                   }`}
                 >
                   {found ? '✓ ' : '· '}{p.word}
-                </li>
+                </span>
               );
             })}
-          </ul>
+          </div>
         </div>
       </div>
     </div>
