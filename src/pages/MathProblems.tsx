@@ -98,7 +98,6 @@ export function MathProblems({ initialDifficulty = 'easy', autoStart = false }: 
   const [feedback, setFeedback]         = useState<'correct' | 'wrong' | null>(null);
   const [isNewRecord, setIsNewRecord]   = useState(false);
   const [bestScores, setBestScores]     = useState<Record<Difficulty, number>>(loadBest);
-  const [questionKey, setQuestionKey]   = useState(0);
 
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const inputRef    = useRef<HTMLInputElement>(null);
@@ -113,7 +112,7 @@ export function MathProblems({ initialDifficulty = 'easy', autoStart = false }: 
   const nextProblem = () => {
     setProblem(generateProblem(difficulty));
     setInput('');
-    setQuestionKey((k) => k + 1);
+    inputRef.current?.focus();
   };
 
   const startGame = () => {
@@ -127,8 +126,6 @@ export function MathProblems({ initialDifficulty = 'easy', autoStart = false }: 
     setProblem(generateProblem(difficulty));
     setInput('');
     setPhase('playing');
-
-    setQuestionKey((k) => k + 1);
 
     intervalRef.current = setInterval(() => {
       setTimeLeft((t) => {
@@ -149,6 +146,8 @@ export function MathProblems({ initialDifficulty = 'easy', autoStart = false }: 
     if (!problem || phase !== 'playing' || feedback) return;
     const parsed = parseInt(input.trim(), 10);
     if (isNaN(parsed)) return;
+    // Focus immediately while still inside the user gesture so iOS keeps the keyboard open
+    inputRef.current?.focus();
 
     const isCorrect = parsed === problem.answer;
     setTotal((t) => t + 1);
@@ -316,7 +315,8 @@ export function MathProblems({ initialDifficulty = 'easy', autoStart = false }: 
 
       {/* Problem card */}
       <div className={`w-full border rounded-2xl p-8 text-center transition-colors duration-150 ${feedbackBg}`}>
-        {feedback ? (
+        {/* Feedback overlay — shown on top while input stays mounted below */}
+        {feedback && (
           <div className="py-4">
             {feedback === 'correct' ? (
               <p className="text-5xl font-extrabold text-emerald-400">✓</p>
@@ -329,28 +329,28 @@ export function MathProblems({ initialDifficulty = 'easy', autoStart = false }: 
               </>
             )}
           </div>
-        ) : (
-          <>
-            <p className="text-5xl sm:text-6xl font-extrabold text-slate-100 tracking-tight">
-              {problem?.display} =
-            </p>
-            <input
-              key={questionKey}
-              ref={inputRef}
-              type="number"
-              inputMode="numeric"
-              pattern="[0-9]*"
-              autoFocus
-              className="mt-6 w-full text-center text-3xl bg-slate-900 border border-slate-600 focus:border-indigo-500 focus:outline-none rounded-xl px-4 py-3 text-slate-100 placeholder:text-slate-600 transition-colors [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); submitAnswer(); } }}
-              placeholder="?"
-              autoComplete="off"
-            />
-            <p className="text-slate-600 text-xs mt-2">Press Enter to submit</p>
-          </>
         )}
+
+        {/* Input always stays in the DOM so iOS doesn't dismiss the keyboard */}
+        <div className={feedback ? 'hidden' : ''}>
+          <p className="text-5xl sm:text-6xl font-extrabold text-slate-100 tracking-tight">
+            {problem?.display} =
+          </p>
+          <input
+            ref={inputRef}
+            type="number"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            autoFocus
+            className="mt-6 w-full text-center text-3xl bg-slate-900 border border-slate-600 focus:border-indigo-500 focus:outline-none rounded-xl px-4 py-3 text-slate-100 placeholder:text-slate-600 transition-colors [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); submitAnswer(); } }}
+            placeholder="?"
+            autoComplete="off"
+          />
+          <p className="text-slate-600 text-xs mt-2">Press Enter to submit</p>
+        </div>
       </div>
 
       <button
