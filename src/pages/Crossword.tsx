@@ -285,6 +285,7 @@ export function Crossword({ initialDifficulty = 'easy', autoStart = false }: {
   const startTimeRef = useRef<number | null>(null);
   const rafRef       = useRef<number | null>(null);
   const tickRef      = useRef<() => void>(null!);
+  const prevDoneRef  = useRef<Set<string>>(new Set());
 
   const stopTimer = useCallback(() => {
     if (rafRef.current) { cancelAnimationFrame(rafRef.current); rafRef.current = null; }
@@ -344,6 +345,7 @@ export function Crossword({ initialDifficulty = 'easy', autoStart = false }: {
     setGridSize(cfg.gridSize);
     setSelectedCell(null);
     setSelectedDir('across');
+    prevDoneRef.current = new Set();
     setCompletedIds(new Set());
     setJustCompleted(null);
     setElapsedMs(0);
@@ -355,7 +357,7 @@ export function Crossword({ initialDifficulty = 'easy', autoStart = false }: {
     setPhase('playing');
   }, [wordBank, difficulty, stopTimer, tick]);
 
-  useEffect(() => { if (autoStart && wordBank.length > 0) startGame(); }, [autoStart, wordBank]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (autoStart && wordBank.length > 0) setTimeout(() => startGame(), 0); }, [autoStart, wordBank]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Derived: currently selected placement
   const selectedPlacement = useMemo((): Placement | null => {
@@ -498,24 +500,24 @@ export function Crossword({ initialDifficulty = 'easy', autoStart = false }: {
       }
     }
 
-    setCompletedIds(prev => {
-      // Detect a newly completed word for feedback
-      const newlyDone = [...done].find(id => !prev.has(id));
+    const newlyDone = [...done].find(id => !prevDoneRef.current.has(id));
+    prevDoneRef.current = done;
+
+    setTimeout(() => {
+      setCompletedIds(done);
       if (newlyDone) {
         setJustCompleted(newlyDone);
         setTimeout(() => setJustCompleted(null), 1200);
       }
-      return done;
-    });
-
-    if (done.size === placements.length) {
-      stopTimer();
-      const elapsed = Date.now() - startTimeRef.current!;
-      setFinalMs(elapsed);
-      setIsNewRecord(saveBest(difficulty, elapsed));
-      setBestTimes(loadBest());
-      setTimeout(() => setPhase('finished'), 400);
-    }
+      if (done.size === placements.length) {
+        stopTimer();
+        const elapsed = Date.now() - startTimeRef.current!;
+        setFinalMs(elapsed);
+        setIsNewRecord(saveBest(difficulty, elapsed));
+        setBestTimes(loadBest());
+        setTimeout(() => setPhase('finished'), 400);
+      }
+    }, 0);
   }, [cells]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Start screen ──────────────────────────────────────────────────────────
@@ -735,7 +737,7 @@ export function Crossword({ initialDifficulty = 'easy', autoStart = false }: {
         <div className="overflow-y-auto pb-2">
           <div className="flex lg:flex-col gap-4 lg:gap-3">
             {acrossWords.length > 0 && (
-              <div className="min-w-[130px] lg:min-w-0">
+              <div className="min-w-32.5 lg:min-w-0">
                 <p className="text-slate-400 text-xs uppercase tracking-wider font-semibold mb-1.5">Across →</p>
                 <ul className="space-y-0.5">
                   {acrossWords.map(p => {
@@ -762,7 +764,7 @@ export function Crossword({ initialDifficulty = 'easy', autoStart = false }: {
               </div>
             )}
             {downWords.length > 0 && (
-              <div className="min-w-[130px] lg:min-w-0">
+              <div className="min-w-32.5 lg:min-w-0">
                 <p className="text-slate-400 text-xs uppercase tracking-wider font-semibold mb-1.5">Down ↓</p>
                 <ul className="space-y-0.5">
                   {downWords.map(p => {
