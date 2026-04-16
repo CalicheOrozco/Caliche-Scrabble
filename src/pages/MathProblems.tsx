@@ -355,6 +355,7 @@ export function MathProblems({ initialDifficulty = 'easy', autoStart = false }: 
 
       <button
         className="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 text-white font-semibold py-3 px-10 rounded-xl transition-colors w-full"
+        onPointerDown={(e) => e.preventDefault()}
         onClick={submitAnswer}
         disabled={!!feedback || !input.trim()}
       >
