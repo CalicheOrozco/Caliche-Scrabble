@@ -6,7 +6,7 @@ output_file = "Spanish_7letters.txt"
 with open(input_file, "r", encoding="utf-8") as f:
     all_words = [line.strip() for line in f if line.strip()]
 
-seven_letter_words = [w for w in all_words if len(w) == 7]
+seven_letter_words = [w for w in all_words if len(w) >= 7]
 removed = len(all_words) - len(seven_letter_words)
 
 with open(output_file, "w", encoding="utf-8") as f:
