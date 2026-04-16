@@ -24,9 +24,10 @@ import { StroopEffect } from './pages/StroopEffect';
 import { ShuffleGame } from './pages/ShuffleGame';
 import { EmojiMemory } from './pages/EmojiMemory';
 import { WordFlash } from './pages/WordFlash';
+import { Crossword } from './pages/Crossword';
 import { PracticeMenu } from './pages/MinigamesMenu';
 
-type Page = 'game' | 'minigames' | 'checker' | 'scores' | 'recall' | 'numbers' | 'wordsearch' | 'memory' | 'memoryinverse' | 'math' | 'fastcategory' | 'stroop' | 'shuffle' | 'emojimemory' | 'wordflash';
+type Page = 'game' | 'minigames' | 'checker' | 'scores' | 'recall' | 'numbers' | 'wordsearch' | 'memory' | 'memoryinverse' | 'math' | 'fastcategory' | 'stroop' | 'shuffle' | 'emojimemory' | 'wordflash' | 'crossword';
 
 function pageFromPathname(pathname: string): Page {
   const normalized = pathname.replace(/\/+$/, '');
@@ -44,6 +45,7 @@ function pageFromPathname(pathname: string): Page {
   if (/^\/shuffle$/i.test(normalized)) return 'shuffle';
   if (/^\/emoji-memory$/i.test(normalized)) return 'emojimemory';
   if (/^\/word-flash$/i.test(normalized)) return 'wordflash';
+  if (/^\/crossword$/i.test(normalized)) return 'crossword';
   return 'game';
 }
 
@@ -64,6 +66,7 @@ function pathnameForPage(page: Page): string {
     case 'shuffle':       return '/shuffle';
     case 'emojimemory':   return '/emoji-memory';
     case 'wordflash':     return '/word-flash';
+    case 'crossword':     return '/crossword';
   }
 }
 
@@ -206,7 +209,7 @@ export default function App() {
     }
   };
 
-  const MINIGAME_PAGES: Page[] = ['numbers', 'wordsearch', 'memory', 'memoryinverse', 'math', 'fastcategory', 'stroop', 'shuffle', 'emojimemory', 'wordflash'];
+  const MINIGAME_PAGES: Page[] = ['numbers', 'wordsearch', 'memory', 'memoryinverse', 'math', 'fastcategory', 'stroop', 'shuffle', 'emojimemory', 'wordflash', 'crossword'];
   const isMinigame = MINIGAME_PAGES.includes(page);
 
   return (
@@ -241,6 +244,7 @@ export default function App() {
         {page === 'shuffle' && <ShuffleGame />}
         {page === 'emojimemory' && <EmojiMemory />}
         {page === 'wordflash' && <WordFlash />}
+        {page === 'crossword' && <Crossword />}
       </div>
     </DictionaryProvider>
   );

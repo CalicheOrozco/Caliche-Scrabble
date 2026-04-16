@@ -1,4 +1,4 @@
-type TargetPage = 'wordsearch' | 'memory' | 'memoryinverse' | 'math' | 'fastcategory' | 'numbers' | 'stroop' | 'shuffle' | 'emojimemory' | 'wordflash';
+type TargetPage = 'wordsearch' | 'memory' | 'memoryinverse' | 'math' | 'fastcategory' | 'numbers' | 'stroop' | 'shuffle' | 'emojimemory' | 'wordflash' | 'crossword';
 
 interface PracticeMenuProps {
   onNavigate: (page: TargetPage) => void;
@@ -53,6 +53,7 @@ export function PracticeMenu({ onNavigate }: PracticeMenuProps) {
         <Card title="Stroop Effect"    icon={<GameIcon src="/stroop-effect-icon.jpg"    alt="Stroop Effect" />}    onClick={() => onNavigate('stroop')} />
         <Card title="Emoji Memory"     icon={<GameIcon src="/emoji-memory-icon.jpg"    alt="Emoji Memory" />}        onClick={() => onNavigate('emojimemory')} />
         <Card title="Word Flash"       icon={<GameIcon src="/word-flash-icon.jpg"  alt="Word Flash" />}        onClick={() => onNavigate('wordflash')} />
+        <Card title="Crossword"        icon={<GameIcon src="/crossword-icon.jpg"        alt="Crossword" />}        onClick={() => onNavigate('crossword')} />
         <Card title="Shuffle"          icon={<ShuffleIcon/>}                                                       onClick={() => onNavigate('shuffle')} />
       </div>
     </main>

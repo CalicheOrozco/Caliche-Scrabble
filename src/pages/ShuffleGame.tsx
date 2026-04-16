@@ -7,11 +7,12 @@ import { MathProblems } from './MathProblems';
 import { FastCategory } from './FastCategory';
 import { StroopEffect } from './StroopEffect';
 import { EmojiMemory } from './EmojiMemory';
+import { Crossword } from './Crossword';
 
 type Difficulty = 'easy' | 'medium' | 'advanced';
-type GameId = 'numbers' | 'wordsearch' | 'memory' | 'memoryinverse' | 'math' | 'fastcategory' | 'stroop' | 'emojimemory';
+type GameId = 'numbers' | 'wordsearch' | 'memory' | 'memoryinverse' | 'math' | 'fastcategory' | 'stroop' | 'emojimemory' | 'crossword';
 
-const GAMES: GameId[] = ['numbers', 'wordsearch', 'memory', 'memoryinverse', 'math', 'fastcategory', 'stroop', 'emojimemory'];
+const GAMES: GameId[] = ['numbers', 'wordsearch', 'memory', 'memoryinverse', 'math', 'fastcategory', 'stroop', 'emojimemory', 'crossword'];
 
 const GAME_LABELS: Record<GameId, string> = {
   numbers:      'Number Sequence',
@@ -22,6 +23,7 @@ const GAME_LABELS: Record<GameId, string> = {
   fastcategory: 'Fast Category',
   stroop:       'Stroop Effect',
   emojimemory:  'Emoji Memory',
+  crossword:    'Crossword',
 };
 
 function pickRandom<T>(arr: T[]): T {
@@ -54,6 +56,7 @@ export function ShuffleGame() {
       case 'fastcategory':  game = <FastCategory initialDifficulty={difficulty} autoStart />; break;
       case 'stroop':        game = <StroopEffect initialDifficulty={difficulty} autoStart />; break;
       case 'emojimemory':   game = <EmojiMemory initialDifficulty={difficulty} autoStart />; break;
+      case 'crossword':     game = <Crossword initialDifficulty={difficulty} autoStart />; break;
     }
 
     return (

@@ -1,6 +1,6 @@
 import { clsx } from 'clsx';
 
-type Page = 'game' | 'minigames' | 'checker' | 'scores' | 'recall' | 'numbers' | 'wordsearch' | 'memory' | 'memoryinverse' | 'math' | 'fastcategory' | 'stroop' | 'shuffle' | 'emojimemory' | 'wordflash';
+type Page = 'game' | 'minigames' | 'checker' | 'scores' | 'recall' | 'numbers' | 'wordsearch' | 'memory' | 'memoryinverse' | 'math' | 'fastcategory' | 'stroop' | 'shuffle' | 'emojimemory' | 'wordflash' | 'crossword';
 
 interface HeaderProps {
   page: Page;
@@ -23,6 +23,7 @@ const PAGE_LABELS: Record<Page, string> = {
   shuffle: 'Shuffle',
   emojimemory: 'Emoji Memory',
   wordflash:   'Word Flash',
+  crossword:   'Crossword',
 };
 
 export function Header({ page, onNavigate }: HeaderProps) {
